@@ -1,14 +1,10 @@
-// app/page.tsx
 import { AnomalyCard } from "@/components/AnomalyCard";
 import { WazeData } from "@/lib/definitions";
 
 async function getData(): Promise<WazeData> {
-  const res = await fetch(
-    "https://www.waze.com/row-partnerhub-api/feeds-tvt/?id=1747914316263",
-    {
-      next: { revalidate: 120 },
-    }
-  );
+  const res = await fetch(process.env.NEXT_PUBLIC_WAZE_API_URL!, {
+    next: { revalidate: 120 },
+  });
 
   if (!res.ok) throw new Error("Erro ao carregar dados da Waze API");
 
