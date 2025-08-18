@@ -2,7 +2,7 @@ import { AnomalyCard } from "@/components/AnomalyCard";
 import { WazeData } from "@/lib/definitions";
 
 async function getData(): Promise<WazeData> {
-  const res = await fetch(process.env.NEXT_PUBLIC_WAZE_API_URL!, {
+  const res = await fetch(process.env.WAZE_API_URL!, {
     next: { revalidate: 120 },
   });
 
