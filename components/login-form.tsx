@@ -17,29 +17,29 @@ export function LoginForm({
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card>
-        <CardHeader>
-          <CardTitle>Entre na sua conta</CardTitle>
+        <CardHeader className="text-center">
+          <CardTitle className="text-xl">Bem-vindo</CardTitle>
           <CardDescription>Entre com seu email e senha</CardDescription>
         </CardHeader>
         <CardContent>
           <form>
-            <div className="flex flex-col gap-6">
-              <div className="grid gap-3">
-                <Label htmlFor="email">Email</Label>
-                <Input
-                  id="email"
-                  type="email"
-                  placeholder="seuemail@email.com"
-                  required
-                />
-              </div>
-              <div className="grid gap-3">
-                <div className="flex items-center">
-                  <Label htmlFor="password">Senha</Label>
+            <div className="grid gap-6">
+              <div className="grid gap-6">
+                <div className="grid gap-3">
+                  <Label htmlFor="email">Email</Label>
+                  <Input
+                    id="email"
+                    type="email"
+                    placeholder="exemplo@email.com"
+                    required
+                  />
                 </div>
-                <Input id="password" type="password" required />
-              </div>
-              <div className="flex flex-col gap-3">
+                <div className="grid gap-3">
+                  <div className="flex items-center">
+                    <Label htmlFor="password">Senha</Label>
+                  </div>
+                  <Input id="password" type="password" required />
+                </div>
                 <Button type="submit" className="w-full">
                   Entrar
                 </Button>
