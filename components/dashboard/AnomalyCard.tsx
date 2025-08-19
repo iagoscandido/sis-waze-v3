@@ -19,7 +19,6 @@ interface AnomalyCardProps {
 type Status = "normal" | "above_average" | "below_average";
 
 export const AnomalyCard = ({
-  children,
   route,
   averageTravelTime,
   currentTravelTime,

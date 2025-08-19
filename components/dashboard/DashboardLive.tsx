@@ -1,70 +1,44 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { AnomalyCard } from "@/components/dashboard/AnomalyCard";
-import { WazeData, WazeRoute } from "@/lib/definitions";
 import Loading from "@/app/(public)/dashboard/loading";
+import { useWazeData } from "@/lib/hooks";
+import { formatDate } from "@/lib/utils";
 
 export const DashboardLive = () => {
-  const [routes, setRoutes] = useState<WazeRoute[]>([]);
-  const [updateTime, setUpdateTime] = useState<number>(0);
-  const [loading, setLoading] = useState(true);
+  const { data, isLoading, isError } = useWazeData();
 
-  useEffect(() => {
-    async function loadData() {
-      try {
-        setLoading(true);
-        const res = await fetch("/api/waze");
-        const data: WazeData = await res.json();
+  if (isLoading) return <Loading />;
+  if (isError || !data || !data.routes || data.routes.length === 0) {
+    return <p>Nenhuma rota encontrada 🚗</p>;
+  }
 
-        const updatedAt = new Date(data.updateTime);
-        const updatedAtFormatted = updatedAt.toLocaleString("pt-BR", {
-          dateStyle: "short",
-          timeStyle: "short",
-          timeZone: "America/Sao_Paulo",
-        });
-
-        setRoutes(data.routes || []);
-        setUpdateTime(data.updateTime || Date.now());
-      } catch (err) {
-        console.error("Erro ao carregar dados:", err);
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    loadData();
-
-    const interval = setInterval(loadData, 60 * 1000);
-    return () => clearInterval(interval);
-  }, []);
-
-  if (loading) return <Loading />;
-  if (!routes.length) return <p>Nenhuma rota encontrada 🚗</p>;
+  const { routes, updateTime } = data;
 
   return (
-    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-      {routes.map((r) => {
-        // Converte segundos para minutos
-        const avgTime = r.historicTime > 0 ? r.historicTime / 60 : 0;
-        const currTime = r.time > 0 ? r.time / 60 : avgTime * 3;
+    <div>
+      <div className="flex justify-between items-center mb-4">
+        <h2 className="text-xl font-semibold">Anomalias</h2>
+        <p className="text-sm text-gray-500">
+          Última atualização: {formatDate(updateTime)}
+        </p>
+      </div>
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+        {routes.map((r) => {
+          const avgTime = r.historicTime > 0 ? r.historicTime / 60 : 0;
+          const currTime = r.time > 0 ? r.time / 60 : avgTime * 3;
 
-        const updatedAt = new Date(updateTime).toLocaleString("pt-BR", {
-          dateStyle: "short",
-          timeStyle: "short",
-          timeZone: "America/Sao_Paulo",
-        });
-
-        return (
-          <AnomalyCard
-            key={r.id}
-            route={r.name}
-            averageTravelTime={Math.round(avgTime)}
-            currentTravelTime={Math.round(currTime)}
-            jamLevel={r.jamLevel}
-          ></AnomalyCard>
-        );
-      })}
+          return (
+            <AnomalyCard
+              key={r.id}
+              route={r.name}
+              averageTravelTime={Math.round(avgTime)}
+              currentTravelTime={Math.round(currTime)}
+              jamLevel={r.jamLevel}
+            />
+          );
+        })}
+      </div>
     </div>
   );
 };
