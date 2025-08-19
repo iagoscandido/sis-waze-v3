@@ -17,6 +17,13 @@ export const DashboardLive = () => {
         const res = await fetch("/api/waze");
         const data: WazeData = await res.json();
 
+        const updatedAt = new Date(data.updateTime);
+        const updatedAtFormatted = updatedAt.toLocaleString("pt-BR", {
+          dateStyle: "short",
+          timeStyle: "short",
+          timeZone: "America/Sao_Paulo",
+        });
+
         setRoutes(data.routes || []);
         setUpdateTime(data.updateTime || Date.now());
       } catch (err) {
@@ -28,7 +35,7 @@ export const DashboardLive = () => {
 
     loadData();
 
-    const interval = setInterval(loadData, 30 * 1000);
+    const interval = setInterval(loadData, 60 * 1000);
     return () => clearInterval(interval);
   }, []);
 
@@ -55,11 +62,7 @@ export const DashboardLive = () => {
             averageTravelTime={Math.round(avgTime)}
             currentTravelTime={Math.round(currTime)}
             jamLevel={r.jamLevel}
-          >
-            <p className="text-xs text-gray-500">
-              Última atualização: {updatedAt}
-            </p>
-          </AnomalyCard>
+          ></AnomalyCard>
         );
       })}
     </div>
