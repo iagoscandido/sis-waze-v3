@@ -10,3 +10,9 @@ export interface WazeData {
   updateTime: number;
   routes: WazeRoute[];
 }
+
+export interface User {
+  id: string;
+  email: string;
+  role: string;
+}
