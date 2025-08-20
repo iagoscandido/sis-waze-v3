@@ -1,6 +1,7 @@
 import { loginSchema } from "@/lib/loginSchema";
 import prisma from "@/prisma";
 import { PrismaAdapter } from "@auth/prisma-adapter";
+import { compare } from "bcryptjs";
 import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import { z } from "zod";
@@ -24,8 +25,8 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 
           if (!user) throw new Error("Usuário não encontrado");
 
-          // const passwordsMatch = await compare(password, user.password);
-          // if (!passwordsMatch) throw new Error("Credenciais inválidas");
+          const passwordsMatch = await compare(password, user.password);
+          if (!passwordsMatch) throw new Error("Credenciais inválidas");
 
           return {
             id: user.id,
