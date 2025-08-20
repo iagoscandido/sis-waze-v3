@@ -1,12 +1,11 @@
 import { DashboardLive } from "@/components/dashboard/DashboardLive";
 import { auth } from "@/lib/auth.server";
 import { redirect } from "next/navigation";
-import { Role } from "@prisma/client";
 
 const DashboardPage = async () => {
   const session = await auth();
 
-  if (!session || !session.user || session.user.role !== Role.ADMIN) {
+  if (!session || !session.user || session.user.role !== "ADMIN") {
     redirect("/login");
   }
 

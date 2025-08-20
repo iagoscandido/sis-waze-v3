@@ -1,11 +1,9 @@
-import NextAuth from "next-auth";
-import { PrismaAdapter } from "@auth/prisma-adapter";
+import { loginSchema } from "@/lib/loginSchema";
 import prisma from "@/prisma";
+import { PrismaAdapter } from "@auth/prisma-adapter";
+import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import { z } from "zod";
-import { compare } from "bcryptjs";
-import { loginSchema } from "@/lib/loginSchema";
-import { Role } from "@prisma/client";
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   trustHost: true,
