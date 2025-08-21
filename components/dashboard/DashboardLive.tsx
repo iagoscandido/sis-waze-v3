@@ -8,9 +8,9 @@ import { formatDate } from "@/lib/utils";
 export const DashboardLive = () => {
   const { data, isLoading, isError } = useWazeData();
 
-  if (isLoading) return <Loading />;
+  if (isLoading) return <p>Carregando...</p>;
   if (isError || !data || !data.routes || data.routes.length === 0) {
-    return <p>Nenhuma rota encontrada 🚗</p>;
+    return <p>Nenhuma rota encontrada. </p>;
   }
 
   const { routes, updateTime } = data;
