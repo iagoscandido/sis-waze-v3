@@ -10,7 +10,7 @@ const DashboardPage = async () => {
   }
 
   return (
-    <main className="min-h-screen p-8">
+    <main className="flex flex-col items-center justify-between min-h-screen">
       <h1 className="text-2xl font-bold mb-6">Rotas monitoradas</h1>
       <DashboardLive />
     </main>
