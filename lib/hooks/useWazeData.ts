@@ -2,7 +2,7 @@
 
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useRef } from "react";
-import { WazeData } from "./definitions";
+import { WazeData } from "../definitions";
 
 async function getWazeData(): Promise<WazeData> {
   const res = await fetch("/api/waze", {
@@ -23,17 +23,15 @@ export function useWazeData() {
   const queryResult = useQuery({
     queryKey: ["wazeData"],
     queryFn: getWazeData,
-    refetchInterval: 60 * 1000, // 1 minute
-    refetchIntervalInBackground: true, // Keep refetching even when tab is not focused
-    refetchOnWindowFocus: true, // Refetch when user returns to tab
-    refetchOnReconnect: true, // Refetch when network reconnects
-    staleTime: 30 * 1000, // Data is considered stale after 30 seconds
-    gcTime: 5 * 60 * 1000, // Keep in cache for 5 minutes (formerly cacheTime)
+    refetchInterval: 60 * 1000,
+    refetchIntervalInBackground: true,
+    refetchOnWindowFocus: true,
+    refetchOnReconnect: true,
+    staleTime: 30 * 1000,
+    gcTime: 5 * 60 * 1000,
     retry: (failureCount, error) => {
-      // Custom retry logic
       if (failureCount >= 3) return false;
 
-      // Don't retry on 4xx errors (client errors)
       if (error instanceof Error && error.message.includes("4")) {
         return false;
       }
@@ -43,7 +41,6 @@ export function useWazeData() {
     retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 30000), // Exponential backoff
   });
 
-  // Enhanced visibility handling
   const wasHiddenRef = useRef(false);
 
   useEffect(() => {
@@ -51,7 +48,6 @@ export function useWazeData() {
       if (document.hidden) {
         wasHiddenRef.current = true;
       } else if (wasHiddenRef.current) {
-        // Tab became visible again, trigger immediate refetch
         queryResult.refetch();
         wasHiddenRef.current = false;
       }
@@ -63,15 +59,14 @@ export function useWazeData() {
     };
   }, [queryResult.refetch]);
 
-  // Enhanced online/offline detection
   useEffect(() => {
     const handleOnline = () => {
-      console.log("🟢 Connection restored, fetching latest traffic data...");
+      console.log("Connection restored, fetching latest traffic data...");
       queryResult.refetch();
     };
 
     const handleOffline = () => {
-      console.log("🔴 Connection lost - using cached data");
+      console.log("Connection lost - using cached data");
     };
 
     window.addEventListener("online", handleOnline);
@@ -83,16 +78,15 @@ export function useWazeData() {
     };
   }, [queryResult.refetch]);
 
-  // Log successful updates (helpful for debugging)
   useEffect(() => {
     if (queryResult.data?.updateTime) {
-      console.log("📊 Traffic data updated:", queryResult.data.updateTime);
+      console.log("Traffic data updated:", queryResult.data.updateTime);
     }
   }, [queryResult.data?.updateTime]);
 
   return {
     ...queryResult,
-    // Helper properties for easier usage
+
     isOnline: typeof navigator !== "undefined" ? navigator.onLine : true,
     isInitialLoading: queryResult.isLoading && !queryResult.data,
     hasData: !!queryResult.data,

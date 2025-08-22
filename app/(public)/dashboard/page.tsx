@@ -1,12 +1,13 @@
-import { DashboardLive } from "@/components/dashboard/DashboardLive";
+import { DashboardContent } from "@/components/dashboard/DashboardContent";
 import { auth } from "@/lib/auth.server";
 import { Metadata } from "next";
 import { redirect } from "next/navigation";
+import { LogoutButton } from "@/components/logout/LogoutButton";
 
 export const metadata: Metadata = {
   title: "Dashboard de Tráfego - Rotas Monitoradas",
   description: "Monitoramento em tempo real de anomalias de tráfego",
-  robots: "noindex, nofollow", // Private dashboard
+  robots: "noindex, nofollow",
 };
 
 export const dynamic = "force-dynamic";
@@ -20,9 +21,9 @@ const DashboardPage = async () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen">
       {/* Header */}
-      <header className="bg-white shadow-sm border-b">
+      <header className="bg-white shadow-sm border-b justify-between">
         <div className="max-w-7xl mx-auto px-4 py-6">
           <div className="flex justify-between items-center">
             <div>
@@ -36,18 +37,17 @@ const DashboardPage = async () => {
               <p className="text-sm text-gray-500">
                 Bem-vindo, {session.user.name || session.user.email}
               </p>
-              <div className="flex items-center gap-2 mt-1">
-                <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
-                <span className="text-xs text-green-600">Sistema ativo</span>
-              </div>
+              <p>
+                <LogoutButton>Sair</LogoutButton>
+              </p>
             </div>
           </div>
         </div>
       </header>
 
       {/* Main Content */}
-      <main className="py-8">
-        <DashboardLive />
+      <main className="max-w-7xl mx-auto px-4 py-8">
+        <DashboardContent />
       </main>
 
       {/* Footer */}
