@@ -6,7 +6,6 @@ export const revalidate = 0;
 
 export async function GET(request: NextRequest) {
   try {
-    // Add timestamp for cache busting and tracking
     const requestTime = new Date().toISOString();
 
     console.log(`Fetching Waze data at ${requestTime}`);
@@ -19,9 +18,9 @@ export async function GET(request: NextRequest) {
           "User-Agent": "Traffic-Dashboard/1.0",
           Accept: "application/json",
         },
-        // Shorter cache for more real-time data
+
         next: {
-          revalidate: 30, // 30 seconds
+          revalidate: 30,
           tags: ["waze-traffic-data"],
         },
       }
@@ -49,7 +48,6 @@ export async function GET(request: NextRequest) {
 
     const data = await res.json();
 
-    // Validate data structure
     if (!data || !data.routes || !Array.isArray(data.routes)) {
       console.warn("Invalid data structure received from Waze API");
       return Response.json(
@@ -62,7 +60,6 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    // Enrich data with server metadata
     const enrichedData = {
       ...data,
       serverTimestamp: requestTime,
@@ -81,7 +78,7 @@ export async function GET(request: NextRequest) {
       status: 200,
       headers: {
         "Content-Type": "application/json",
-        "Cache-Control": "public, max-age=30, s-maxage=30", // 30 seconds cache
+        "Cache-Control": "public, max-age=30, s-maxage=30",
         "Access-Control-Allow-Origin": "*",
         "Access-Control-Allow-Methods": "GET",
         "Last-Modified": new Date().toUTCString(),
