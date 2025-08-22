@@ -1,15 +1,15 @@
 import { WazeRoute } from "@/lib/definitions";
 import { NextRequest } from "next/server";
 
-export const dynamic = "force-dynamic"; // Force dynamic rendering
-export const revalidate = 0; // Disable static generation
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
 export async function GET(request: NextRequest) {
   try {
     // Add timestamp for cache busting and tracking
     const requestTime = new Date().toISOString();
 
-    console.log(`🚗 Fetching Waze data at ${requestTime}`);
+    console.log(`Fetching Waze data at ${requestTime}`);
 
     const res = await fetch(
       "https://www.waze.com/row-partnerhub-api/feeds-tvt/?id=11072621667",
@@ -28,7 +28,7 @@ export async function GET(request: NextRequest) {
     );
 
     if (!res.ok) {
-      console.error(`❌ Waze API error: ${res.status} ${res.statusText}`);
+      console.error(`Waze API error: ${res.status} ${res.statusText}`);
       return Response.json(
         {
           error: "Erro ao buscar dados do Waze",
@@ -51,7 +51,7 @@ export async function GET(request: NextRequest) {
 
     // Validate data structure
     if (!data || !data.routes || !Array.isArray(data.routes)) {
-      console.warn("⚠️ Invalid data structure received from Waze API");
+      console.warn("Invalid data structure received from Waze API");
       return Response.json(
         {
           error: "Estrutura de dados inválida",
@@ -75,7 +75,7 @@ export async function GET(request: NextRequest) {
       ),
     };
 
-    console.log(`✅ Successfully fetched ${data.routes.length} routes`);
+    console.log(`Successfully fetched ${data.routes.length} routes`);
 
     return Response.json(enrichedData, {
       status: 200,
@@ -92,7 +92,7 @@ export async function GET(request: NextRequest) {
     const errorMessage =
       err instanceof Error ? err.message : "Erro desconhecido";
 
-    console.error("💥 Waze API Error:", {
+    console.error("Waze API Error:", {
       error: errorMessage,
       timestamp: errorTime,
       stack: err instanceof Error ? err.stack : undefined,
