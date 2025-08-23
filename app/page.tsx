@@ -10,6 +10,12 @@ const page = () => {
       >
         Ir para o Dashboard
       </Link>
+      <Link
+        href="/tables"
+        className="px-6 py-3 bg-white text-indigo-600 font-semibold rounded-lg shadow-md hover:bg-indigo-50 transition-colors duration-300"
+      >
+        Ir para Tabelas
+      </Link>
     </main>
   );
 };
