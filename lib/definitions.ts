@@ -4,8 +4,6 @@ export interface WazeRoute {
   time: number;
   historicTime: number;
   jamLevel: number;
-  lat: number;
-  lon: number;
 }
 
 export interface WazeData {
@@ -107,6 +105,8 @@ export interface Route {
   id: string;
   time: number;
   type: string;
+  lat?: number;
+  lon?: number;
 }
 
 export interface UsersOnJam {
