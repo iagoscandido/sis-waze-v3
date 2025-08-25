@@ -11,6 +11,58 @@ export interface WazeData {
   routes: WazeRoute[];
 }
 
+export interface WazeRouteIrregularities {
+  id: string;
+  city: string;
+}
+
+export interface WazeDataIrregularities {
+  routes: WazeRouteIrregularities[];
+}
+
+export interface Location {
+  x: number;
+  y: number;
+}
+
+export interface AlertItem {
+  country: string;
+  city?: string;
+  type: string;
+  subtype?: string;
+  street?: string;
+  reportDescription?: string;
+  location: Location;
+  pubMillis: number;
+  uuid: string;
+}
+
+export interface TestSubRoute {
+  id: string;
+  name: string;
+  toName: string;
+  fromName: string;
+
+  historictime: number;
+  time: number;
+  jamLevel: number;
+
+  lenght: number;
+  bbox: {
+    minY: number;
+    minX: number;
+    maxY: number;
+    maxX: number;
+  };
+  line: [x: number, y: number][];
+}
+
+export interface TestRoute {
+  updateTime: number;
+  name: string;
+  subRoutes: TestSubRoute[];
+}
+
 export interface User {
   id: string;
   email: string;
@@ -53,6 +105,8 @@ export interface Route {
   id: string;
   time: number;
   type: string;
+  lat?: number;
+  lon?: number;
 }
 
 export interface UsersOnJam {

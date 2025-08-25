@@ -1,13 +1,12 @@
+import { Badge } from "@/components/ui/badge";
 import {
   Card,
   CardAction,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import { useEffect, useState } from "react";
 
@@ -28,6 +27,7 @@ export const RouteCard = ({
   averageTravelTime,
   currentTravelTime,
   jamLevel,
+
   tolerance = currentTravelTime * 0.3,
   isUpdating = false,
 }: RouteCardProps) => {

@@ -60,6 +60,13 @@ export async function GET(request: NextRequest) {
       );
     }
 
+    const enricheRoute = (route: WazeRoute) => {
+      return {
+        id: route.id,
+        name: route.name,
+        time: route.time,
+      };
+    };
     const enrichedData = {
       ...data,
       serverTimestamp: requestTime,

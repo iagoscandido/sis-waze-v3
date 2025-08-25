@@ -1,69 +1,64 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { RouteCard } from "@/components/dashboard/RouteCard";
 import { useWazeData } from "@/lib/hooks/useWazeData";
 import DashboardHeadder from "./DashboardContentHeadder";
+import { SortSelect, SortOption } from "@/components/SortSelect";
+import { WazeRoute } from "@/lib/definitions";
 
 export const DashboardContent = () => {
   const { data, isLoading, isError, refetch, isFetching, isRefetching } =
     useWazeData();
 
-  if (isLoading && !data) {
-    return (
-      <div className="flex flex-col items-center justify-center min-h-[400px] space-y-4">
-        <div className="animate-pulse flex space-x-4 w-full max-w-md">
-          <div className="rounded-full bg-gray-300 h-10 w-10"></div>
-          <div className="flex-1 space-y-2 py-1">
-            <div className="h-4 bg-gray-300 rounded w-3/4"></div>
-            <div className="h-4 bg-gray-300 rounded w-1/2"></div>
-          </div>
-        </div>
-        <p className="text-gray-500">Carregando dados em tempo real...</p>
-      </div>
-    );
-  }
+  const [sortedRoutes, setSortedRoutes] = useState<WazeRoute[]>([]);
 
-  if (isError || !data || !data.routes || data.routes.length === 0) {
-    return (
-      <div className="flex flex-col items-center justify-center min-h-[400px] space-y-4">
-        <div className="text-red-500 text-xl"></div>
-        <div className="text-center">
-          <p className="text-gray-700 font-medium">Nenhuma rota encontrada</p>
-          <p className="text-gray-500 text-sm mt-2">
-            Verifique sua conexão ou tente novamente
-          </p>
-          <button
-            onClick={() => refetch()}
-            className="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors"
-          >
-            Tentar novamente
-          </button>
-        </div>
-      </div>
-    );
-  }
+  useEffect(() => {
+    if (data?.routes) {
+      setSortedRoutes(data.routes);
+    }
+  }, [data?.routes]);
 
-  const { routes } = data;
+  const sortOptions: SortOption[] = [
+    { label: "A → Z", value: "asc" },
+    { label: "Z → A", value: "desc" },
+  ];
+
+  const handleSort = (value: string) => {
+    if (!data?.routes) return;
+    const sorted = [...data.routes].sort((a, b) =>
+      value === "asc"
+        ? a.name.localeCompare(b.name)
+        : b.name.localeCompare(a.name)
+    );
+    setSortedRoutes(sorted);
+  };
+
+  if (isLoading && !data) return <p>Carregando...</p>;
+  if (isError || !data?.routes || data.routes.length === 0)
+    return <p>Nenhuma rota encontrada</p>;
 
   return (
-    <div className="w-full max-w-7xl mx-auto px-4">
-      {/* Header with status and controls */}
+    <div className="w-full max-w-7xl mx-auto px-4 space-y-4">
       <DashboardHeadder />
 
-      {/* Loading overlay for updates */}
-      {(isFetching || isRefetching) && data && (
+      {/* Select de ordenação */}
+      <div className="flex justify-end">
+        <SortSelect options={sortOptions} onSort={handleSort} />
+      </div>
+
+      {(isFetching || isRefetching) && (
         <div className="fixed top-4 right-4 z-50 bg-blue-500 text-white px-3 py-2 rounded-md text-sm animate-pulse">
           Atualizando dados...
         </div>
       )}
 
-      {/* Routes grid */}
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 ">
-        {routes.map((route) => {
+      {/* Grid de rotas */}
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {sortedRoutes.map((route) => {
           const avgTime = route.historicTime > 0 ? route.historicTime / 60 : 0;
           const currTime = route.time > 0 ? route.time / 60 : avgTime * 3;
 
-          // Calculate severity for visual feedback
           const severity =
             currTime > avgTime * 2
               ? "high"
@@ -91,14 +86,6 @@ export const DashboardContent = () => {
             </div>
           );
         })}
-      </div>
-
-      {/* Stats footer */}
-      <div className="mt-8 text-center text-sm text-gray-500 border-t pt-4">
-        <p>
-          Monitorando {routes.length} rota{routes.length !== 1 ? "s" : ""} •
-          Atualização automática a cada minuto
-        </p>
       </div>
     </div>
   );
