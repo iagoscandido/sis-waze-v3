@@ -82,8 +82,6 @@ export const DashboardContent = () => {
                 averageTravelTime={Math.round(avgTime)}
                 currentTravelTime={Math.round(currTime)}
                 jamLevel={route.jamLevel}
-                lat={route.lat}
-                lon={route.lon}
               />
             </div>
           );
