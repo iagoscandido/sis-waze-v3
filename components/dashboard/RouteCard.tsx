@@ -21,7 +21,7 @@ interface RouteCardProps {
   isUpdating?: boolean;
 }
 
-type Status = "normal" | "above_average" | "below_average";
+type Status = "low" | "normal" | "high" | "critical";
 
 export const RouteCard = ({
   route,
@@ -46,22 +46,25 @@ export const RouteCard = ({
   let status: Status = "normal";
 
   if (currentTravelTime <= averageTravelTime - tolerance) {
-    status = "below_average";
+    status = "low";
   } else if (currentTravelTime >= averageTravelTime + tolerance) {
-    status = "above_average";
+    status = "high";
+  } else {
+    status = "normal";
   }
 
   const statusLabel: Record<Status, string> = {
+    low: "Abaixo da média",
     normal: "Dentro da média",
-    above_average: "Acima da média",
-    below_average: "Abaixo da média",
+    high: "Acima da média",
+    critical: "Muito acima da média",
   };
 
   type JamVariant = "jam0" | "jam1" | "jam2" | "jam3" | "jam4";
 
   const jamLevels: Record<number, { label: string; variant: JamVariant }> = {
     0: {
-      label: "Livre",
+      label: "Sem Trânsito",
       variant: "jam0",
     },
     1: {
@@ -69,15 +72,15 @@ export const RouteCard = ({
       variant: "jam1",
     },
     2: {
-      label: "Moderado",
+      label: "Transito Moderado",
       variant: "jam2",
     },
     3: {
-      label: "Intenso",
+      label: "Transito Intenso",
       variant: "jam3",
     },
     4: {
-      label: "Muito intenso",
+      label: "Transito Muito intenso",
       variant: "jam4",
     },
   };
@@ -90,12 +93,11 @@ export const RouteCard = ({
       : 0;
 
   const getSeverityLevel = () => {
-    if (status === "normal") return "normal";
-
     const percentageChange = Math.abs(trendPercentage);
-    if (percentageChange >= 50) return "critical";
-    if (percentageChange >= 25) return "warning";
-    return "mild";
+    if (percentageChange <= 30) return "low";
+    if (percentageChange <= 80) return "normal";
+    if (percentageChange <= 100) return "high";
+    return "critical";
   };
 
   const severity = getSeverityLevel();
@@ -106,11 +108,10 @@ export const RouteCard = ({
         "ring-4 ring-primary/30": isUpdating,
         "ring-4 ring-green-300 dark:ring-green-600 ring-opacity-75 animate-pulse":
           isNewData,
-        "bg-green-700": status === "below_average",
-        "bg-red-700": status === "above_average" && severity === "critical",
-        "bg-yellow-700": status === "above_average" && severity === "warning",
-        "bg-orange-700": status === "above_average" && severity === "mild",
-        "bg-gray-700": status === "normal",
+        "bg-green-900": severity === "low",
+        "bg-yellow-900": severity === "normal",
+        "bg-red-900": severity === "high",
+        "bg-purple-900": severity === "critical",
       })}
     >
       <CardHeader className="items-center justify-between">
@@ -131,7 +132,6 @@ export const RouteCard = ({
         <span className="text-sm font-medium">{statusLabel[status]}</span>
         {jamLevel !== undefined && jamLevels[jamLevel] && (
           <div className="flex items-center gap-1">
-            Congestionamento:
             <Badge variant={jamLevels[jamLevel].variant}>
               {jamLevels[jamLevel].label}
             </Badge>
