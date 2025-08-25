@@ -4,11 +4,65 @@ export interface WazeRoute {
   time: number;
   historicTime: number;
   jamLevel: number;
+  lat: number;
+  lon: number;
 }
 
 export interface WazeData {
   updateTime: number;
   routes: WazeRoute[];
+}
+
+export interface WazeRouteIrregularities {
+  id: string;
+  city: string;
+}
+
+export interface WazeDataIrregularities {
+  routes: WazeRouteIrregularities[];
+}
+
+export interface Location {
+  x: number;
+  y: number;
+}
+
+export interface AlertItem {
+  country: string;
+  city?: string;
+  type: string;
+  subtype?: string;
+  street?: string;
+  reportDescription?: string;
+  location: Location;
+  pubMillis: number;
+  uuid: string;
+}
+
+export interface TestSubRoute {
+  id: string;
+  name: string;
+  toName: string;
+  fromName: string;
+
+  historictime: number;
+  time: number;
+  jamLevel: number;
+
+  lenght: number;
+  bbox: {
+    minY: number;
+    minX: number;
+    maxY: number;
+    maxX: number;
+  };
+  line: [x: number, y: number][];
+}
+
+export interface TestRoute {
+  updateTime: number;
+  name: string;
+  subRoutes: TestSubRoute[];
 }
 
 export interface User {
