@@ -13,15 +13,19 @@ export interface SortOption {
   value: string;
 }
 
-interface SortSelectProps<T> {
+interface SortSelectProps {
   options: SortOption[];
+  defaultValue?: string; // valor inicial do Select
   onSort: (value: string) => void;
 }
 
-export function SortSelect<T>({ options, onSort }: SortSelectProps<T>) {
+export function SortSelect({ options, defaultValue, onSort }: SortSelectProps) {
   return (
-    <Select onValueChange={(value) => onSort(value)}>
-      <SelectTrigger className="w-[180px]">
+    <Select
+      defaultValue={defaultValue}
+      onValueChange={(value) => onSort(value)}
+    >
+      <SelectTrigger className="w-[220px]">
         <SelectValue placeholder="Ordenar" />
       </SelectTrigger>
       <SelectContent>

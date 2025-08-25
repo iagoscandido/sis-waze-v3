@@ -6,32 +6,65 @@ import { useWazeData } from "@/lib/hooks/useWazeData";
 import DashboardHeadder from "./DashboardContentHeadder";
 import { SortSelect, SortOption } from "@/components/SortSelect";
 import { WazeRoute } from "@/lib/definitions";
+import { calcTrendPercentageSafe } from "@/lib/utils";
 
 export const DashboardContent = () => {
   const { data, isLoading, isError, refetch, isFetching, isRefetching } =
     useWazeData();
 
-  const [sortedRoutes, setSortedRoutes] = useState<WazeRoute[]>([]);
-
-  useEffect(() => {
-    if (data?.routes) {
-      setSortedRoutes(data.routes);
-    }
-  }, [data?.routes]);
+  const [sortedRoutes, setSortedRoutes] = useState<
+    (WazeRoute & { _trend: number })[]
+  >([]);
+  const [sortValue, setSortValue] = useState<string>("trend_desc");
 
   const sortOptions: SortOption[] = [
-    { label: "A → Z", value: "asc" },
-    { label: "Z → A", value: "desc" },
+    { label: "A → Z", value: "name_asc" },
+    { label: "Maior tempo", value: "time_desc" },
+    { label: "Maior tendência", value: "trend_desc" },
   ];
 
-  const handleSort = (value: string) => {
+  // Função de ordenação
+  const sortRoutes = (
+    routes: (WazeRoute & { _trend: number })[],
+    value: string
+  ) => {
+    return [...routes].sort((a, b) => {
+      switch (value) {
+        case "name_asc":
+          return a.name.localeCompare(b.name);
+        case "time_desc": {
+          const aCurr = a.time > 0 ? a.time : a.historicTime;
+          const bCurr = b.time > 0 ? b.time : b.historicTime;
+          return bCurr - aCurr;
+        }
+        case "trend_desc":
+        default:
+          // Ordenação determinística: primeiro trend, depois currentTime
+          if (b._trend !== a._trend) return b._trend - a._trend;
+          const aCurr = a.time > 0 ? a.time : a.historicTime;
+          const bCurr = b.time > 0 ? b.time : b.historicTime;
+          return bCurr - aCurr;
+      }
+    });
+  };
+
+  // Atualiza sortedRoutes sempre que dados ou sortValue mudarem
+  useEffect(() => {
     if (!data?.routes) return;
-    const sorted = [...data.routes].sort((a, b) =>
-      value === "asc"
-        ? a.name.localeCompare(b.name)
-        : b.name.localeCompare(a.name)
-    );
-    setSortedRoutes(sorted);
+
+    // Calcula _trend de forma consistente
+    const routesWithTrend = data.routes.map((route) => {
+      const safeHistoricTime = route.historicTime > 0 ? route.historicTime : 1;
+      const safeCurrentTime = route.time > 0 ? route.time : safeHistoricTime;
+      const trend = calcTrendPercentageSafe(safeCurrentTime, safeHistoricTime);
+      return { ...route, _trend: trend };
+    });
+
+    setSortedRoutes(sortRoutes(routesWithTrend, sortValue));
+  }, [data?.routes, sortValue]);
+
+  const handleSort = (value: string) => {
+    setSortValue(value);
   };
 
   if (isLoading && !data) return <p>Carregando...</p>;
@@ -44,7 +77,11 @@ export const DashboardContent = () => {
 
       {/* Select de ordenação */}
       <div className="flex justify-end">
-        <SortSelect options={sortOptions} onSort={handleSort} />
+        <SortSelect
+          options={sortOptions}
+          defaultValue="trend_desc"
+          onSort={handleSort}
+        />
       </div>
 
       {(isFetching || isRefetching) && (
@@ -56,8 +93,8 @@ export const DashboardContent = () => {
       {/* Grid de rotas */}
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {sortedRoutes.map((route) => {
-          const avgTime = route.historicTime > 0 ? route.historicTime / 60 : 0;
-          const currTime = route.time > 0 ? route.time / 60 : avgTime * 3;
+          const avgTime = route.historicTime;
+          const currTime = route.time > 0 ? route.time : avgTime;
 
           const severity =
             currTime > avgTime * 2
@@ -79,8 +116,8 @@ export const DashboardContent = () => {
             >
               <RouteCard
                 route={route.name}
-                averageTravelTime={Math.round(avgTime)}
-                currentTravelTime={Math.round(currTime)}
+                averageTravelTime={Math.round(avgTime / 60)}
+                currentTravelTime={Math.round(currTime / 60)}
                 jamLevel={route.jamLevel}
               />
             </div>

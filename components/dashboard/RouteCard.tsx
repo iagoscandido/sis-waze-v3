@@ -7,7 +7,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { cn } from "@/lib/utils";
+import { calcTrendPercentageSafe, cn } from "@/lib/utils";
 import { useEffect, useState } from "react";
 
 interface RouteCardProps {
@@ -37,7 +37,7 @@ export const RouteCard = ({
   useEffect(() => {
     if (previousTime !== currentTravelTime && previousTime !== 0) {
       setIsNewData(true);
-      const timer = setTimeout(() => setIsNewData(false), 2000); // Flash for 2 seconds
+      const timer = setTimeout(() => setIsNewData(false), 2000);
       return () => clearTimeout(timer);
     }
     setPreviousTime(currentTravelTime);
@@ -60,40 +60,32 @@ export const RouteCard = ({
     critical: "Muito acima da média",
   };
 
-  type JamVariant = "jam0" | "jam1" | "jam2" | "jam3" | "jam4";
-
-  const jamLevels: Record<number, { label: string; variant: JamVariant }> = {
+  const jamLevels: Record<number, { label: string }> = {
     0: {
       label: "Sem Trânsito",
-      variant: "jam0",
     },
     1: {
       label: "Trânsito leve",
-      variant: "jam1",
     },
     2: {
       label: "Transito Moderado",
-      variant: "jam2",
     },
     3: {
       label: "Transito Intenso",
-      variant: "jam3",
     },
     4: {
       label: "Transito Muito intenso",
-      variant: "jam4",
     },
   };
 
-  const trendPercentage =
-    averageTravelTime > 0
-      ? Math.round(
-          ((currentTravelTime - averageTravelTime) / averageTravelTime) * 100
-        )
-      : 0;
+  const trendPercentage = calcTrendPercentageSafe(
+    currentTravelTime,
+    averageTravelTime
+  );
 
   const getSeverityLevel = () => {
-    const percentageChange = Math.abs(trendPercentage);
+    const percentageChange = trendPercentage;
+
     if (percentageChange <= 30) return "low";
     if (percentageChange <= 80) return "normal";
     if (percentageChange <= 100) return "high";
@@ -120,9 +112,12 @@ export const RouteCard = ({
         </CardTitle>
         <CardAction>
           {trendPercentage !== 0 && (
-            <Badge variant="secondary" className="text-xs px-1 py-0.5">
+            <Badge
+              variant="secondary"
+              className="bg-white/20 rounded-lg text-white text-opacity-70 px-1 py-0.5"
+            >
               {trendPercentage > 0 ? "+" : ""}
-              {trendPercentage}%
+              {trendPercentage.toFixed(1)}%
             </Badge>
           )}
         </CardAction>
@@ -132,7 +127,10 @@ export const RouteCard = ({
         <span className="text-sm font-medium">{statusLabel[status]}</span>
         {jamLevel !== undefined && jamLevels[jamLevel] && (
           <div className="flex items-center gap-1">
-            <Badge variant={jamLevels[jamLevel].variant}>
+            <Badge
+              variant="secondary"
+              className="bg-white/20 rounded-lg text-xs text-white text-opacity-70 mb-1"
+            >
               {jamLevels[jamLevel].label}
             </Badge>
           </div>
@@ -142,15 +140,9 @@ export const RouteCard = ({
       <CardContent className="p-0">
         <div className="grid grid-cols-2 gap-2 text-sm p-2">
           <div className="text-center p-3 bg-white/20 rounded-lg">
-            <div className="text-xs text-white text-opacity-70 mb-1">Média</div>
-            <div className="text-lg font-bold text-white">
-              {averageTravelTime}
-              <span className="text-xs ml-1">min</span>
+            <div className="text-xs text-white text-opacity-70 mb-1">
+              Média Atual
             </div>
-          </div>
-
-          <div className="text-center p-3 bg-white/20 rounded-lg">
-            <div className="text-xs text-white text-opacity-70 mb-1">Atual</div>
             <div
               className={cn(
                 "text-lg font-bold transition-colors duration-300 text-white",
@@ -159,7 +151,16 @@ export const RouteCard = ({
                 }
               )}
             >
-              {currentTravelTime}
+              {currentTravelTime.toFixed(0)}
+              <span className="text-xs ml-1">min</span>
+            </div>
+          </div>
+          <div className="text-center p-3 bg-white/20 rounded-lg">
+            <div className="text-xs text-white text-opacity-70 mb-1">
+              Média Histórica
+            </div>
+            <div className="text-lg font-bold text-white">
+              {averageTravelTime.toFixed(0)}
               <span className="text-xs ml-1">min</span>
             </div>
           </div>
