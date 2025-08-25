@@ -1,7 +1,7 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { DataTable } from "@/app/tables/data-table";
 import { columnsWazeRoute } from "@/app/tables/columns-waze-route";
-import { columnsUsersOnJam } from "@/app/tables/columns-users-on-jam";
+// import { columnsUsersOnJam } from "@/app/tables/columns-users-on-jam";
 import { columnsLengthOfJams } from "@/app/tables/columns-length-of-jams";
 import { columnsRoute } from "@/app/tables/columns-route";
 import { columnsSubRoute } from "@/app/tables/columns-subroute";
