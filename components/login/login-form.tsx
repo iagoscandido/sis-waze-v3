@@ -35,7 +35,7 @@ export function LoginForm({
     if (result?.error) {
       setError("Email ou senha inválidos");
     } else {
-      window.location.href = "/dashboard";
+      window.location.href = "/waze-routes-test/cards";
     }
   };
 

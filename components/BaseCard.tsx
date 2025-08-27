@@ -10,16 +10,22 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
 import { ReactNode } from "react";
-import MapButtons from "@/components/components-test/map-buttons";
+import MapButtons from "@/components/map-buttons";
 
 interface BaseCardProps {
   title: string;
-  children: ReactNode; // aqui entram os StatBox (ou qualquer outro conteúdo)
+  children: ReactNode;
   isUpdating?: boolean;
   isNewData?: boolean;
   className?: string;
   headerAction?: ReactNode;
   showButtons?: boolean;
+  lat: number;
+  lon: number;
+  zoom?: number;
+  navigate?: boolean;
+  fromLat: number;
+  fromLon: number;
 }
 
 export const BaseCard = ({
@@ -29,7 +35,13 @@ export const BaseCard = ({
   isNewData = false,
   className,
   headerAction,
-  showButtons,
+  showButtons = false,
+  lat,
+  lon,
+  zoom,
+  navigate,
+  fromLat,
+  fromLon,
 }: BaseCardProps) => {
   return (
     <Card
@@ -59,7 +71,14 @@ export const BaseCard = ({
       <Separator />
       {showButtons && (
         <CardFooter>
-          <MapButtons />
+          <MapButtons
+            lat={lat}
+            lon={lon}
+            zoom={zoom}
+            navigate={navigate}
+            fromLat={fromLat}
+            fromLon={fromLon}
+          />
         </CardFooter>
       )}
     </Card>

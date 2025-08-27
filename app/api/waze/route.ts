@@ -1,121 +1,125 @@
-import { WazeRoute } from "@/lib/definitions";
-import { NextRequest } from "next/server";
+import { WazeRoute } from "@/lib/types/definitions";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
-export async function GET(request: NextRequest) {
+export interface WazeApiResponse {
+  routes: WazeRoute[];
+  [key: string]: unknown;
+}
+
+export interface EnrichedWazeData extends WazeApiResponse {
+  serverTimestamp: string;
+  routeCount: number;
+  success: boolean;
+  isValid: boolean;
+}
+
+// Constantes da API
+const WAZE_API_URL =
+  "https://www.waze.com/row-partnerhub-api/feeds-tvt/?id=11072621667";
+const WAZE_HEADERS = {
+  "Cache-Control": "no-cache, no-store, must-revalidate",
+  "User-Agent": "Traffic-Dashboard/1.0",
+  Accept: "application/json",
+};
+
+// ----------------- UTILITÁRIOS -----------------
+
+// Cria respostas JSON padronizadas
+const jsonResponse = (
+  data: unknown,
+  status = 200,
+  extraHeaders: Record<string, string> = {}
+) =>
+  Response.json(data, {
+    status,
+    headers: {
+      "Content-Type": "application/json",
+      "Cache-Control": "no-cache, no-store, must-revalidate",
+      "Access-Control-Allow-Origin": "*",
+      ...extraHeaders,
+    },
+  });
+
+// Valida se as rotas têm os campos esperados
+const validateRoutes = (routes: WazeRoute[]) =>
+  routes.every((r) => r.id && r.name && typeof r.time === "number");
+
+// Faz o fetch da API Waze
+async function fetchWazeData(): Promise<WazeApiResponse> {
+  const res = await fetch(WAZE_API_URL, {
+    headers: WAZE_HEADERS,
+    next: { revalidate: 30, tags: ["waze-traffic-data"] },
+  });
+
+  if (!res.ok) throw { status: res.status, statusText: res.statusText };
+  const data: WazeApiResponse = await res.json();
+  if (!data?.routes || !Array.isArray(data.routes))
+    throw { invalidStructure: true };
+  return data;
+}
+
+// Enriquecimento dos dados com timestamp e validação
+const enrichData = (data: WazeApiResponse, timestamp: string) => ({
+  ...data,
+  serverTimestamp: timestamp,
+  routeCount: data.routes.length,
+  success: true,
+  isValid: validateRoutes(data.routes),
+});
+
+// ----------------- HANDLER -----------------
+
+export async function GET() {
+  const timestamp = new Date().toISOString();
+  console.log(`Fetching Waze data at ${timestamp}`);
+
   try {
-    const requestTime = new Date().toISOString();
-
-    console.log(`Fetching Waze data at ${requestTime}`);
-
-    const res = await fetch(
-      "https://www.waze.com/row-partnerhub-api/feeds-tvt/?id=11072621667",
-      {
-        headers: {
-          "Cache-Control": "no-cache, no-store, must-revalidate",
-          "User-Agent": "Traffic-Dashboard/1.0",
-          Accept: "application/json",
-        },
-
-        next: {
-          revalidate: 30,
-          tags: ["waze-traffic-data"],
-        },
-      }
-    );
-
-    if (!res.ok) {
-      console.error(`Waze API error: ${res.status} ${res.statusText}`);
-      return Response.json(
-        {
-          error: "Erro ao buscar dados do Waze",
-          status: res.status,
-          statusText: res.statusText,
-          timestamp: requestTime,
-          success: false,
-        },
-        {
-          status: res.status,
-          headers: {
-            "Cache-Control": "no-cache, no-store, must-revalidate",
-            "Access-Control-Allow-Origin": "*",
-          },
-        }
-      );
-    }
-
-    const data = await res.json();
-
-    if (!data || !data.routes || !Array.isArray(data.routes)) {
-      console.warn("Invalid data structure received from Waze API");
-      return Response.json(
-        {
-          error: "Estrutura de dados inválida",
-          timestamp: requestTime,
-          success: false,
-        },
-        { status: 422 }
-      );
-    }
-
-    const enricheRoute = (route: WazeRoute) => {
-      return {
-        id: route.id,
-        name: route.name,
-        time: route.time,
-      };
-    };
-    const enrichedData = {
-      ...data,
-      serverTimestamp: requestTime,
-      routeCount: data.routes.length,
-      success: true,
-      // Add data validation
-      isValid: data.routes.every(
-        (route: WazeRoute) =>
-          route.id && route.name && typeof route.time === "number"
-      ),
-    };
+    const data = await fetchWazeData();
+    const enriched = enrichData(data, timestamp);
 
     console.log(`Successfully fetched ${data.routes.length} routes`);
 
-    return Response.json(enrichedData, {
-      status: 200,
-      headers: {
-        "Content-Type": "application/json",
-        "Cache-Control": "public, max-age=30, s-maxage=30",
-        "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Methods": "GET",
-        "Last-Modified": new Date().toUTCString(),
-      },
+    return jsonResponse(enriched, 200, {
+      "Cache-Control": "public, max-age=30, s-maxage=30",
+      "Access-Control-Allow-Methods": "GET",
+      "Last-Modified": new Date().toUTCString(),
     });
-  } catch (err) {
-    const errorTime = new Date().toISOString();
-    const errorMessage =
-      err instanceof Error ? err.message : "Erro desconhecido";
+  } catch (err: unknown) {
+    // Erros de fetch ou estrutura inválida
+    if (typeof err === "object" && err !== null && "invalidStructure" in err) {
+      console.warn("Invalid data structure from Waze API");
+      return jsonResponse(
+        { error: "Estrutura de dados inválida", timestamp, success: false },
+        422
+      );
+    }
 
-    console.error("Waze API Error:", {
-      error: errorMessage,
-      timestamp: errorTime,
-      stack: err instanceof Error ? err.stack : undefined,
-    });
+    if (typeof err === "object" && err !== null && "status" in err) {
+      const e = err as { status: number; statusText: string };
+      console.error(`Waze API error: ${e.status} ${e.statusText}`);
+      return jsonResponse(
+        {
+          error: "Erro ao buscar dados do Waze",
+          ...e,
+          timestamp,
+          success: false,
+        },
+        e.status
+      );
+    }
 
-    return Response.json(
+    // Erro interno desconhecido
+    console.error("Unexpected Waze API error:", err);
+    return jsonResponse(
       {
         error: "Erro interno do servidor",
-        message: errorMessage,
-        timestamp: errorTime,
+        message: err instanceof Error ? err.message : "Desconhecido",
+        timestamp,
         success: false,
       },
-      {
-        status: 500,
-        headers: {
-          "Content-Type": "application/json",
-          "Cache-Control": "no-cache, no-store, must-revalidate",
-        },
-      }
+      500
     );
   }
 }

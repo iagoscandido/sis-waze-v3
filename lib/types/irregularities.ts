@@ -1,3 +1,9 @@
+export interface Bbox {
+  minY: number;
+  minX: number;
+  maxY: number;
+  maxX: number;
+}
 export interface IrregularitiesJsonData {
   alerts: [];
   endTimeMillis: number;
@@ -18,14 +24,14 @@ export interface Irregularities {
   nThumbsUp: number;
   updateDate: string;
   trend: number;
-  city?: string;
+  city: string;
   line: Line[];
   detectionDateMillis: number;
   type: string;
   endNode?: string;
   speed: number;
   seconds: number;
-  street?: string;
+  street: string;
   jamLevel: number;
   id: string;
   nComents: number;
@@ -37,11 +43,12 @@ export interface Irregularities {
   length: number;
   updateMillis: number;
   nImages: number;
-  alerts: []; // imeplentar alerts depois
+  alerts: [];
   detectionDate: string;
   regularSpeed: number;
   causeType?: string;
   causeAlert?: CauseAlert;
+  startNode: string;
 }
 
 export interface CauseAlert {
@@ -76,8 +83,8 @@ export interface WazeLocalIrregularities {
   secontds: number;
   delaySeconds: number;
 
-  startNode?: string;
-  endNode?: string;
+  startNode: string;
+  endNode: string;
 
   causeType?: string;
   causeAlert?: CauseAlert;
