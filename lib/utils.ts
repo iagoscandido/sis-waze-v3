@@ -19,9 +19,10 @@ export function calcTrendPercentage(
   historicTimeSeconds: number
 ) {
   if (historicTimeSeconds === 0) return 0;
-  const trend =
-    (currentTravelTimeSeconds - historicTimeSeconds) / historicTimeSeconds;
-  return Math.round(trend * 100);
+  return (
+    ((currentTravelTimeSeconds - historicTimeSeconds) / historicTimeSeconds) *
+    100
+  );
 }
 
 export function calcTrendPercentageSafe(
@@ -32,4 +33,32 @@ export function calcTrendPercentageSafe(
   const safeCurrentTime =
     currentTravelTimeSeconds > 0 ? currentTravelTimeSeconds : safeHistoricTime;
   return ((safeCurrentTime - safeHistoricTime) / safeHistoricTime) * 100;
+}
+
+type Status = "low" | "normal" | "high" | "critical";
+
+export function getRouteStatus(
+  current: number,
+  average: number,
+  tolerance: number
+): Status {
+  if (current <= average - tolerance) return "low";
+  if (current >= average + tolerance) return "high";
+  return "normal";
+}
+
+export function getSeverityLevel(trend: number): Status {
+  if (trend <= 30) return "low";
+  if (trend <= 80) return "normal";
+  if (trend <= 100) return "high";
+  return "critical";
+}
+
+export function getSeverityBg(severity: Status): string {
+  return {
+    low: "bg-green-900",
+    normal: "bg-yellow-900",
+    high: "bg-red-900",
+    critical: "bg-purple-900",
+  }[severity];
 }

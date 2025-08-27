@@ -15,7 +15,7 @@ export interface SortOption {
 
 interface SortSelectProps {
   options: SortOption[];
-  defaultValue?: string; // valor inicial do Select
+  defaultValue?: string;
   onSort: (value: string) => void;
 }
 

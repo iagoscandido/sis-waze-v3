@@ -1,9 +1,12 @@
+import { CauseAlert } from "./types/irregularities";
+
 export interface WazeRoute {
   id: string;
   name: string;
   time: number;
   historicTime: number;
   jamLevel: number;
+  trendPercentage?: number;
 }
 
 export interface WazeData {

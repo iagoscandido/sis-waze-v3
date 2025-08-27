@@ -1,12 +1,11 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import { RouteCard } from "@/components/dashboard/RouteCard";
-import { useWazeData } from "@/lib/hooks/useWazeData";
-import DashboardHeadder from "./DashboardContentHeadder";
-import { SortSelect, SortOption } from "@/components/SortSelect";
+import { SortOption, SortSelect } from "@/components/SortSelect";
 import { WazeRoute } from "@/lib/definitions";
+import { useWazeData } from "@/lib/hooks/useWazeData";
 import { calcTrendPercentageSafe } from "@/lib/utils";
+import { useEffect, useState } from "react";
 
 export const DashboardContent = () => {
   const { data, isLoading, isError, refetch, isFetching, isRefetching } =
@@ -73,8 +72,6 @@ export const DashboardContent = () => {
 
   return (
     <div className="w-full max-w-7xl mx-auto px-4 space-y-4">
-      <DashboardHeadder />
-
       {/* Select de ordenação */}
       <div className="flex justify-end">
         <SortSelect

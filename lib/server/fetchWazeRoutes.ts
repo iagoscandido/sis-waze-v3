@@ -1,0 +1,13 @@
+// lib/server/fetchWazeRoutes.ts
+import { WazeRoute } from "@/lib/definitions";
+
+export async function fetchWazeRoutes(): Promise<{ routes: WazeRoute[] }> {
+  const url =
+    process.env.WAZE_API_URL ??
+    `${process.env.NEXT_PUBLIC_APP_URL ?? ""}/api/waze`;
+  const res = await fetch(url, { next: { revalidate: 10 } });
+  if (!res.ok) {
+    throw new Error(`Falha ao buscar rotas: ${res.status}`);
+  }
+  return res.json();
+}
