@@ -1,6 +1,8 @@
-import { WazeRoute } from "@/lib/definitions";
+import { WazeRoute } from "@/lib/types/definitions";
 
-export async function fetchWazeRoutes(): Promise<{ routes: WazeRoute[] }> {
+export async function fetchWazeRoutes(): Promise<{
+  routes: WazeRoute[];
+}> {
   const url =
     process.env.WAZE_API_URL ??
     `${process.env.NEXT_PUBLIC_APP_URL ?? ""}/api/waze`;

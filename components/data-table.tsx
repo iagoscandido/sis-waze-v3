@@ -1,5 +1,3 @@
-// components/data-table.tsx
-
 "use client";
 
 import * as React from "react";
@@ -25,8 +23,8 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Input } from "@/components/ui/input";
-import { DataTablePagination } from "@/components/data-table-pagination"; // Importe a paginação
-import { DataTableViewOptions } from "@/components/column-toggle"; // Importe o seletor de colunas
+import { DataTablePagination } from "@/components/data-table-pagination";
+import { DataTableViewOptions } from "@/components/column-toggle";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];

@@ -1,4 +1,4 @@
-import { User as AppUser } from "@/lib/definitions";
+import { User as AppUser } from "@/lib/types/definitions";
 import { DefaultSession } from "next-auth";
 
 declare module "next-auth" {
