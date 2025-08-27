@@ -9,7 +9,6 @@ import {
   jamLevels,
   statusLabel,
 } from "@/lib/route-utils";
-import { calcTrendPercentage } from "@/lib/utils";
 import { TrendingDownIcon, TrendingUpIcon } from "lucide-react";
 
 interface RouteCardProps {
@@ -23,7 +22,7 @@ interface RouteCardProps {
   trendPercentage?: number;
 }
 
-export const RouteCardTest = ({
+export const RouteCard = ({
   route,
   averageTravelTime,
   currentTravelTime,

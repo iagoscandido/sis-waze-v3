@@ -1,4 +1,3 @@
-// lib/server/fetchWazeRoutes.ts
 import { WazeRoute } from "@/lib/definitions";
 
 export async function fetchWazeRoutes(): Promise<{ routes: WazeRoute[] }> {

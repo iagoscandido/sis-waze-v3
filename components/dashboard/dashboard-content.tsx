@@ -2,18 +2,16 @@
 
 import { useEffect, useState } from "react";
 import { SortOption, SortSelect } from "@/components/SortSelect";
-import { RouteCardTest } from "@/components/components-test/card-test copy";
+import { RouteCard } from "@/components/dashboard/route-card";
 import { sortRoutes, mapRoutes } from "@/lib/route-utils";
 import { WazeRoute } from "@/lib/definitions";
 import { calcTrendPercentage } from "@/lib/utils";
 
-interface DashboardContentTestProps {
+interface DashboardContentProps {
   initialRoutes: WazeRoute[];
 }
 
-export const DashboardContentTest = ({
-  initialRoutes,
-}: DashboardContentTestProps) => {
+export const DashboardContent = ({ initialRoutes }: DashboardContentProps) => {
   const [routes, setRoutes] = useState(initialRoutes);
   const [sortValue, setSortValue] = useState("trend_desc");
   const [lastUpdated, setLastUpdated] = useState<Date>(new Date());
@@ -90,7 +88,7 @@ export const DashboardContentTest = ({
           const currTime = r.time > 0 ? r.time : avgTime;
 
           return (
-            <RouteCardTest
+            <RouteCard
               key={r.id}
               route={r.name}
               averageTravelTime={Math.round(avgTime / 60)}
