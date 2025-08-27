@@ -1,7 +1,7 @@
 "use client";
 
 import { ColumnDef } from "@tanstack/react-table";
-import { Irregularities } from "@/lib/definitions";
+import { Irregularities } from "@/lib/types/definitions";
 import { DataTableColumnHeader } from "@/components/data-table-column-header";
 
 export const columnsIrregularities: ColumnDef<Irregularities>[] = [
