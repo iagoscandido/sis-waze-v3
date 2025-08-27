@@ -1,6 +1,4 @@
-// lib/route-utils.ts
 import { WazeRoute } from "@/lib/definitions";
-import { calcTrendPercentage } from "@/lib/utils";
 
 export type Severity = "low" | "normal" | "high" | "critical";
 export type Status = "low" | "normal" | "high" | "critical";
