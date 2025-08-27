@@ -1,14 +1,15 @@
 "use client";
 
-import React from "react";
 import { Button } from "@/components/ui/button";
 import { signOut } from "next-auth/react";
+import React from "react";
 
 interface LogoutButtonProps {
-  children: React.ReactNode;
+  children?: React.ReactNode;
+  text?: string;
 }
 
-const LogoutButton = ({ children }: LogoutButtonProps) => {
+const LogoutButton = ({ text = "Sair" }: LogoutButtonProps) => {
   const handleLogout = async () => {
     await signOut({
       callbackUrl: "/login",
@@ -17,7 +18,7 @@ const LogoutButton = ({ children }: LogoutButtonProps) => {
 
   return (
     <Button variant="secondary" onClick={handleLogout}>
-      {children}
+      {text}
     </Button>
   );
 };

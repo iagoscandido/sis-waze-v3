@@ -1,8 +1,11 @@
-import { DashboardContent } from "@/components/dashboard/DashboardContent";
+// app/dashboard/page.tsx
+import { DashboardContentTest } from "@/components/components-test/dashboard-content-test";
+import { LogoutButton } from "@/components/logout/LogoutButton";
 import { auth } from "@/lib/auth.server";
+import { mapRoutes, sortRoutes } from "@/lib/route-utils";
+import { fetchWazeRoutes } from "@/lib/server/fetchWazeRoutes";
 import { Metadata } from "next";
 import { redirect } from "next/navigation";
-import { LogoutButton } from "@/components/logout/LogoutButton";
 
 export const metadata: Metadata = {
   title: "Dashboard de Tráfego - Rotas Monitoradas",
@@ -10,19 +13,20 @@ export const metadata: Metadata = {
   robots: "noindex, nofollow",
 };
 
-export const dynamic = "force-dynamic";
-export const revalidate = 0;
-
-const DashboardPage = async () => {
+export default async function DashboardPageTest() {
   const session = await auth();
 
   if (!session || !session.user || session.user.role !== "ADMIN") {
     redirect("/login");
   }
 
+  const data = await fetchWazeRoutes();
+
+  const routes = mapRoutes(data.routes);
+  const sortedRoutes = sortRoutes(routes, "trend_desc");
+
   return (
     <div className="min-h-screen">
-      {/* Header */}
       <header className="bg-white shadow-sm border-b justify-between">
         <div className="max-w-7xl mx-auto px-4 py-6">
           <div className="flex justify-between items-center">
@@ -35,22 +39,20 @@ const DashboardPage = async () => {
 
             <div className="text-right">
               <p className="text-sm text-gray-500">
-                Bem-vindo, {session.user.name || session.user.email}
+                Bem-vindo, {session.user.name || session?.user.email}
               </p>
               <p>
-                <LogoutButton>Sair</LogoutButton>
+                <LogoutButton text="Sair" />
               </p>
             </div>
           </div>
         </div>
       </header>
 
-      {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 py-8">
-        <DashboardContent />
+        <DashboardContentTest initialRoutes={sortedRoutes} />
       </main>
 
-      {/* Footer */}
       <footer className="bg-white border-t mt-12">
         <div className="max-w-7xl mx-auto px-4 py-6 text-center text-sm text-gray-500">
           <p>
@@ -61,6 +63,4 @@ const DashboardPage = async () => {
       </footer>
     </div>
   );
-};
-
-export default DashboardPage;
+}

@@ -2,7 +2,7 @@
 
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useRef } from "react";
-import { WazeData } from "../definitions";
+import { WazeData } from "@/lib/definitions";
 
 async function getWazeData(): Promise<WazeData> {
   const res = await fetch("/api/waze", {

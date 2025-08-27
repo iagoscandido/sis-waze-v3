@@ -1,18 +1,19 @@
+import { columnsWazeRoute } from "@/app/(private)/tables/(columns)/columns-waze-route";
+import { DataTable } from "@/components/data-table";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { DataTable } from "@/app/tables/data-table";
-import { columnsWazeRoute } from "@/app/tables/columns-waze-route";
-import { columnsUsersOnJam } from "@/app/tables/columns-users-on-jam";
-import { columnsLengthOfJams } from "@/app/tables/columns-length-of-jams";
-import { columnsRoute } from "@/app/tables/columns-route";
-import { columnsSubRoute } from "@/app/tables/columns-subroute";
-import { columnsIrregularities } from "@/app/tables/columns-irregularities";
-import { columnsLeadAlert } from "@/app/tables/columns-lead-alert";
-import { columnsLine } from "@/app/tables/columns-line";
-import { columnsBbox } from "@/app/tables/columns-bbox";
 
+import {
+  columnsBbox,
+  columnsIrregularities,
+  columnsLeadAlert,
+  columnsLengthOfJams,
+  columnsLine,
+  columnsRoute,
+  columnsSubRoute,
+} from "@/app/(private)/tables/columns";
+import { JsonData } from "@/lib/definitions";
 import fs from "fs/promises";
 import path from "path";
-import { JsonData } from "@/lib/definitions";
 
 async function getJsonData(): Promise<JsonData> {
   const filePath = path.join(process.cwd(), "data", "example.json");
@@ -29,7 +30,6 @@ export default async function DashboardPage() {
         {/* Tabs Header */}
         <TabsList className="grid grid-cols-4 md:grid-cols-5 lg:grid-cols-8 gap-2">
           <TabsTrigger value="routes">Rotas</TabsTrigger>
-          {/* <TabsTrigger value="usersOnJam">Usuários</TabsTrigger> */}
           <TabsTrigger value="lengthOfJams">Comprimento Jams</TabsTrigger>
           <TabsTrigger value="allRoutes">Rotas Detalhadas</TabsTrigger>
           <TabsTrigger value="subRoutes">Subrotas</TabsTrigger>
@@ -40,13 +40,12 @@ export default async function DashboardPage() {
 
         {/* Rotas */}
         <TabsContent value="routes">
-          <DataTable columns={columnsWazeRoute} data={data.routes} />
+          <DataTable
+            columns={columnsWazeRoute}
+            data={data.routes}
+            filterColumn="name"
+          />
         </TabsContent>
-
-        {/* Usuários */}
-        {/* <TabsContent value="usersOnJam">
-          <DataTable columns={columnsUsersOnJam} data={data.usersOnJam} />
-        </TabsContent> */}
 
         {/* Comprimento dos Jams */}
         <TabsContent value="lengthOfJams">
