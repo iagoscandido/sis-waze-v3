@@ -1,5 +1,5 @@
 // app/dashboard/page.tsx
-import { DashboardContentTest } from "@/components/components-test/dashboard-content-test";
+import { DashboardContent } from "@/components/dashboard/dashboard-content";
 import { LogoutButton } from "@/components/logout/LogoutButton";
 import { auth } from "@/lib/auth.server";
 import { mapRoutes, sortRoutes } from "@/lib/route-utils";
@@ -49,7 +49,7 @@ export default async function DashboardPageTest() {
       </header>
 
       <main className="max-w-7xl mx-auto px-4 py-8">
-        <DashboardContentTest initialRoutes={sortedRoutes} />
+        <DashboardContent initialRoutes={sortedRoutes} />
       </main>
 
       <footer className="bg-white border-t mt-12">
