@@ -14,7 +14,6 @@ import {
   SidebarHeader,
   SidebarRail,
 } from "@/components/ui/sidebar";
-import Link from "next/link";
 
 const data = {
   user: {
@@ -31,7 +30,7 @@ const data = {
   ],
   navMain: [
     {
-      title: "Tabelas",
+      title: "Tab",
       url: "#",
       icon: SquareTerminal,
       isActive: true,
