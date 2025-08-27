@@ -1,4 +1,3 @@
-// app/dashboard/page.tsx
 import { DashboardContent } from "@/components/dashboard/dashboard-content";
 import { LogoutButton } from "@/components/logout/LogoutButton";
 import { auth } from "@/lib/auth.server";
