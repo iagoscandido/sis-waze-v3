@@ -1,5 +1,3 @@
-import { CauseAlert } from "./types/irregularities";
-
 export interface WazeRoute {
   id: string;
   name: string;
