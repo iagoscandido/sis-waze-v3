@@ -4,7 +4,7 @@ import { Irregularities } from "@/lib/types/irregularities";
 import { mapIrregularities } from "@/lib/utils/irregularitites-utils";
 
 type FetchResult = { irregularities: Irregularities[] };
-
+// this is a comment
 export async function fetchLatestIrregularitiesAction(): Promise<
   Irregularities[]
 > {
