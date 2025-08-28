@@ -18,12 +18,12 @@ const mapButtons = ({
   fromLat,
   fromLon,
 }: MapButtonsProps) => {
-  const wazeURL = `https://www.waze.com/pt-BR/live-map/directions?navigate=${navigate}&zoom=${zoom}&ll=${lat}%2C${lon}&from=ll%7D&to=${lat}%2C${lon}&from=${fromLat}%2C${fromLon}`;
+  const wazeUrl = `https://www.waze.com/pt-BR/live-map/directions?navigate=${navigate}&zoom=${zoom}&ll=${lat}%2C${lon}&from=ll.${fromLat}%2C${fromLon}`;
 
   return (
     <div className="flex items-center w-full gap-x-2">
       <div className="flex-1">
-        <Link target="_blank" rel="noopener noreferrer" href={wazeURL}>
+        <Link target="_blank" rel="noopener noreferrer" href={wazeUrl}>
           <MapIcon />
         </Link>
       </div>
