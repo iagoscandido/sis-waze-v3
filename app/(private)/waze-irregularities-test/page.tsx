@@ -1,12 +1,12 @@
+import { Suspense } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ContentIrregularities } from "@/components/waze-irregularities/irregularity-content";
 import { fetchLatestIrregularitiesAction } from "@/lib/server/actions/irregularitiesActions";
-import { Irregularities } from "@/lib/types/irregularities";
+import type { Irregularities } from "@/lib/types/irregularities";
 import {
   mapIrregularities,
   sortIrregularities,
 } from "@/lib/utils/irregularitites-utils";
-import { Suspense } from "react";
 
 export default async function IrregularitiesPage() {
   const initialIrregularities: Irregularities[] =
