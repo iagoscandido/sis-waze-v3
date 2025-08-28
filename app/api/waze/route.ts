@@ -30,7 +30,7 @@ const WAZE_HEADERS = {
 const jsonResponse = (
   data: unknown,
   status = 200,
-  extraHeaders: Record<string, string> = {}
+  extraHeaders: Record<string, string> = {},
 ) =>
   Response.json(data, {
     status,
@@ -92,7 +92,7 @@ export async function GET() {
       console.warn("Invalid data structure from Waze API");
       return jsonResponse(
         { error: "Estrutura de dados inválida", timestamp, success: false },
-        422
+        422,
       );
     }
 
@@ -106,7 +106,7 @@ export async function GET() {
           timestamp,
           success: false,
         },
-        e.status
+        e.status,
       );
     }
 
@@ -119,7 +119,7 @@ export async function GET() {
         timestamp,
         success: false,
       },
-      500
+      500,
     );
   }
 }

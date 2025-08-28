@@ -22,7 +22,7 @@ export default function WazeDataPage() {
   const [routes, setRoutes] = React.useState<Routes[]>([]);
   const [lengths, setLengths] = React.useState<LengthOfJams[]>([]);
   const [irregularities, setIrregularities] = React.useState<Irregularities[]>(
-    []
+    [],
   );
   const [coordinates, setCoordinates] = React.useState<Coordinates[]>([]);
   const [loading, setLoading] = React.useState(true);

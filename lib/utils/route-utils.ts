@@ -5,7 +5,7 @@ export type Status = "low" | "normal" | "high" | "critical";
 
 export function calcTrendPercentage(
   currentTravelTimeSeconds: number,
-  historicTimeSeconds: number
+  historicTimeSeconds: number,
 ) {
   if (historicTimeSeconds === 0) return 0;
   return (
@@ -57,7 +57,7 @@ export function sortRoutes(routes: WazeRoute[], value: string) {
 export function getRouteStatus(
   current: number,
   average: number,
-  tolerance?: number
+  tolerance?: number,
 ): Status {
   const tol = tolerance ?? current * 0.3;
   if (current <= average - tol) return "low";

@@ -19,7 +19,7 @@ export const rowBox = ({ label, value, highlight = false }: RowBoxProps) => {
           "text-lg font-bold text-white transition-colors duration-300",
           {
             "animate-pulse": highlight,
-          }
+          },
         )}
       >
         {value}

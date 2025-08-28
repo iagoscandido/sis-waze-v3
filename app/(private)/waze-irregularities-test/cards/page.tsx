@@ -13,7 +13,7 @@ export default async function IrregularitiesPage() {
 
   const irregularities = sortIrregularities(
     mapIrregularities(initialIrregularities),
-    "delay_desc"
+    "delay_desc",
   );
 
   return (

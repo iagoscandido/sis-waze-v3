@@ -18,7 +18,7 @@ export const ContentIrregularities = ({
   initialIrregularities,
 }: ContentIrregularitiesProps) => {
   const [irregularities, setIrregularities] = useState<Irregularities[]>(
-    initialIrregularities
+    initialIrregularities,
   );
   const [filteredIrregularities, setFilteredIrregularities] = useState<
     Irregularities[]
@@ -38,7 +38,7 @@ export const ContentIrregularities = ({
 
   useEffect(() => {
     const filtered = irregularities.filter(
-      (item) => item.city === selectedCity
+      (item) => item.city === selectedCity,
     );
     setFilteredIrregularities(sortIrregularities(filtered, sortValue));
   }, [irregularities, sortValue]);
