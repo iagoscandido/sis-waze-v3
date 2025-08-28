@@ -1,12 +1,12 @@
 "use client";
 
-import * as React from "react";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { DataTable } from "@/components/data-table";
-import { columnsIrregularities, columnsLine } from "./columns";
-import { Irregularities, Line } from "@/lib/types/irregularities";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { fetchLatestIrregularitiesAction } from "@/lib/server/actions/irregularitiesActions";
+import { Irregularities, Line } from "@/lib/types/irregularities";
+import * as React from "react";
+import { columnsIrregularities, columnsLine } from "./columns";
 
 export default function IrregularitiesPage() {
   const [data, setData] = React.useState<Irregularities[]>([]);

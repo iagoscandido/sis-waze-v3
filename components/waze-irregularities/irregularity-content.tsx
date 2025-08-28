@@ -149,7 +149,7 @@ export const ContentIrregularities = ({
           ))}
         </div>
       ) : (
-        <Skeleton className="h-32 w-full rounded-xl" />
+        <p>Nenhuma irregularidade encontrada para a cidade selecionada.</p>
       )}
     </div>
   );
