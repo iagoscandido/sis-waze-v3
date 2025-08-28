@@ -40,7 +40,7 @@ export const StatBox = ({
               "text-card-foreground transition-colors duration-300",
               {
                 "animate-pulse": highlight,
-              }
+              },
             )}
           >
             {value2}

@@ -47,7 +47,7 @@ export const RouteCard = ({
   const status = getRouteStatus(
     currentTravelTime,
     averageTravelTime,
-    tolerance
+    tolerance,
   );
   const severity = getSeverityLevel(trendPercentage);
   const bgClass = getSeverityBg(severity);

@@ -1,19 +1,18 @@
-// app/irregularities/page.tsx
+import { Suspense } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ContentIrregularities } from "@/components/waze-irregularities/irregularity-content";
-import { Irregularities } from "@/lib/types/irregularities";
+import type { Irregularities } from "@/lib/types/irregularities";
 import {
   mapIrregularities,
   sortIrregularities,
 } from "@/lib/utils/irregularitites-utils";
-import { Suspense } from "react";
 
 export default async function IrregularitiesPage() {
   const initialIrregularities: Irregularities[] = [];
 
   const irregularities = sortIrregularities(
     mapIrregularities(initialIrregularities),
-    "delay_desc"
+    "delay_desc",
   );
 
   return (

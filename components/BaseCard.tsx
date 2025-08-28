@@ -52,7 +52,7 @@ export const BaseCard = ({
           "ring-4 ring-green-300 dark:ring-green-600 ring-opacity-75 animate-pulse":
             isNewData,
         },
-        className
+        className,
       )}
     >
       {/* Header */}

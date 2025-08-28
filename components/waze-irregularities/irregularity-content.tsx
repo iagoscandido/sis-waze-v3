@@ -1,15 +1,14 @@
 "use client";
 
-import CardIrregularity from "@/components/waze-irregularities/irregularity-card";
-import { SortOption, SortSelect } from "@/components/SortSelect";
+import { useEffect, useState, useTransition } from "react";
+import { CityFilter } from "@/components/city-filter";
+import { type SortOption, SortSelect } from "@/components/SortSelect";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Irregularities } from "@/lib/types/irregularities";
+import CardIrregularity from "@/components/waze-irregularities/irregularity-card";
+import { fetchLatestIrregularitiesAction } from "@/lib/server/actions/irregularitiesActions";
+import type { Irregularities } from "@/lib/types/irregularities";
 import { formatDate } from "@/lib/utils/data-utils";
 import { sortIrregularities } from "@/lib/utils/irregularitites-utils";
-import { useEffect, useState, useTransition } from "react";
-
-import { fetchLatestIrregularitiesAction } from "@/lib/server/actions/irregularitiesActions";
-import { CityFilter } from "@/components/city-filter";
 
 interface ContentIrregularitiesProps {
   initialIrregularities: Irregularities[];
@@ -19,7 +18,7 @@ export const ContentIrregularities = ({
   initialIrregularities,
 }: ContentIrregularitiesProps) => {
   const [irregularities, setIrregularities] = useState<Irregularities[]>(
-    initialIrregularities
+    initialIrregularities,
   );
   const [filteredIrregularities, setFilteredIrregularities] = useState<
     Irregularities[]
@@ -39,7 +38,7 @@ export const ContentIrregularities = ({
 
   useEffect(() => {
     const filtered = irregularities.filter(
-      (item) => item.city === selectedCity
+      (item) => item.city === selectedCity,
     );
     setFilteredIrregularities(sortIrregularities(filtered, sortValue));
   }, [irregularities, sortValue]);

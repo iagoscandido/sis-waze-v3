@@ -6,7 +6,7 @@ export function mapIrregularities(irregularities?: Irregularities[]) {
 
 export function sortIrregularities(
   irregularities: Irregularities[],
-  value: string
+  value: string,
 ) {
   return [...irregularities].sort((a, b) => {
     switch (value) {

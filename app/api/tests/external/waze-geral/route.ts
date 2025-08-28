@@ -9,7 +9,7 @@ export async function GET() {
     if (!res.ok) {
       return NextResponse.json(
         { error: `Failed to fetch data: ${res.statusText}` },
-        { status: res.status }
+        { status: res.status },
       );
     }
 
@@ -19,7 +19,7 @@ export async function GET() {
   } catch (error) {
     return NextResponse.json(
       { error: (error as Error).message || "Internal Server Error" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
