@@ -1,8 +1,8 @@
+import { TrendingDownIcon, TrendingUpIcon } from "lucide-react";
 import { BaseCard } from "@/components/BaseCard";
 import { StatBox } from "@/components/StatBox";
 import { Badge } from "@/components/ui/badge";
 import { getSeverityBg, getSeverityLevel } from "@/lib/utils/route-utils";
-import { TrendingDownIcon, TrendingUpIcon } from "lucide-react";
 
 interface CardIrregularityProps {
   id: string;
