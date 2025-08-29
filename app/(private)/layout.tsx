@@ -1,6 +1,6 @@
+import type React from "react";
 import Footer from "@/components/footer";
 import Topbar from "@/components/topbar";
-import React from "react";
 
 const IrregularitiesLayout = ({ children }: { children: React.ReactNode }) => {
   return (

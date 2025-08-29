@@ -1,13 +1,13 @@
 "use client";
 
-import { ColumnDef } from "@tanstack/react-table";
-import { Badge } from "@/components/ui/badge";
+import type { ColumnDef } from "@tanstack/react-table";
 import { DataTableColumnHeader } from "@/components/data-table-column-header";
-import {
-  Routes,
-  LengthOfJams,
-  Irregularities,
+import { Badge } from "@/components/ui/badge";
+import type {
   Coordinates,
+  Irregularities,
+  LengthOfJams,
+  Routes,
 } from "@/lib/types/routes-definitions";
 
 // Rotas

@@ -6,6 +6,7 @@ export default async function DashboardPage() {
   const data = await fetchWazeRoutes();
 
   const routes = mapRoutes(data.routes);
+
   const sortedRoutes = sortRoutes(routes, "trend_desc");
 
   return (

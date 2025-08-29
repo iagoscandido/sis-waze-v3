@@ -1,4 +1,4 @@
-import { Irregularities } from "@/lib/types/irregularities";
+import type { Irregularities } from "@/lib/types/irregularities";
 
 export function mapIrregularities(irregularities?: Irregularities[]) {
   return (irregularities || []).map((irregularity) => ({ ...irregularity }));
@@ -6,7 +6,7 @@ export function mapIrregularities(irregularities?: Irregularities[]) {
 
 export function sortIrregularities(
   irregularities: Irregularities[],
-  value: string,
+  value: string
 ) {
   return [...irregularities].sort((a, b) => {
     switch (value) {

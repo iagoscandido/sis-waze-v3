@@ -1,6 +1,7 @@
 "use client";
 
-import { cn } from "@/lib/utils";
+import { signIn } from "next-auth/react";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -11,8 +12,7 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { signIn } from "next-auth/react";
-import { useState } from "react";
+import { cn } from "@/lib/utils";
 
 export function LoginForm({
   className,
@@ -35,7 +35,7 @@ export function LoginForm({
     if (result?.error) {
       setError("Email ou senha inválidos");
     } else {
-      window.location.href = "/waze-routes-test/cards";
+      window.location.href = "/waze-irregularities-test/cards";
     }
   };
 

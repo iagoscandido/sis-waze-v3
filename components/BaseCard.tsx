@@ -1,16 +1,19 @@
 "use client";
 
+import { TrendingDownIcon, TrendingUpIcon } from "lucide-react";
+import type { ReactNode } from "react";
+import MapButtons from "@/components/map-buttons";
+import { Badge } from "@/components/ui/badge";
 import {
   Card,
+  CardAction,
   CardContent,
-  CardFooter,
+  CardDescription,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
-import { ReactNode } from "react";
-import MapButtons from "@/components/map-buttons";
 
 interface BaseCardProps {
   title: string;
@@ -22,10 +25,10 @@ interface BaseCardProps {
   showButtons?: boolean;
   lat: number;
   lon: number;
-  zoom?: number;
-  navigate?: boolean;
   fromLat: number;
   fromLon: number;
+  description?: string;
+  trendingPercentage?: number;
 }
 
 export const BaseCard = ({
@@ -34,19 +37,18 @@ export const BaseCard = ({
   isUpdating = false,
   isNewData = false,
   className,
-  headerAction,
   showButtons = false,
   lat,
   lon,
-  zoom,
-  navigate,
   fromLat,
   fromLon,
+  description,
+  trendingPercentage = 0,
 }: BaseCardProps) => {
   return (
     <Card
       className={cn(
-        "h-full w-full transition-all duration-300",
+        "h-full w-full transition-all duration-300 rounded-sm",
         {
           "ring-4 ring-primary/30": isUpdating,
           "ring-4 ring-green-300 dark:ring-green-600 ring-opacity-75 animate-pulse":
@@ -56,31 +58,37 @@ export const BaseCard = ({
       )}
     >
       {/* Header */}
-      <CardHeader className="flex flex-row items-center justify-between">
-        <CardTitle className="font-medium text-white max-h-12">
-          {title}
+      <CardHeader className="flex flex-wrap items-center justify-between">
+        <CardTitle className="font-medium text-white text-wrap">
+          {title || "Não informado"}
+          {description && <CardDescription>{description}</CardDescription>}
         </CardTitle>
-        {headerAction && <div>{headerAction}</div>}
+
+        <CardAction>
+          {showButtons && (
+            <MapButtons
+              lat={lat}
+              lon={lon}
+              fromLat={fromLat}
+              fromLon={fromLon}
+            />
+          )}
+        </CardAction>
+        <CardAction>
+          <Badge
+            variant={"secondary"}
+            className="bg-white/20 rounded-lg text-xs text-white text-opacity-70"
+          >
+            {trendingPercentage < 0 ? <TrendingUpIcon /> : <TrendingDownIcon />}
+            {trendingPercentage.toFixed(1)}%
+          </Badge>
+        </CardAction>
       </CardHeader>
       <Separator />
 
-      {/* Conteúdo genérico (stat boxes, badges, etc.) */}
-      <CardContent className="p-0">
-        <div className="grid grid-cols-2 gap-2 text-sm p-2">{children}</div>
+      <CardContent>
+        <div className="flex text-md p-2">{children}</div>
       </CardContent>
-      <Separator />
-      {showButtons && (
-        <CardFooter>
-          <MapButtons
-            lat={lat}
-            lon={lon}
-            zoom={zoom}
-            navigate={navigate}
-            fromLat={fromLat}
-            fromLon={fromLon}
-          />
-        </CardFooter>
-      )}
     </Card>
   );
 };

@@ -1,11 +1,11 @@
 "use client";
 
+import * as React from "react";
 import { DataTable } from "@/components/data-table";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { fetchLatestIrregularitiesAction } from "@/lib/server/actions/irregularitiesActions";
-import { Irregularities, Line } from "@/lib/types/irregularities";
-import * as React from "react";
+import type { Irregularities, Line } from "@/lib/types/irregularities";
 import { columnsIrregularities, columnsLine } from "./columns";
 
 export default function IrregularitiesPage() {
@@ -45,10 +45,10 @@ export default function IrregularitiesPage() {
 
   return (
     <div className="p-6 space-y-4">
-      <h1 className="text-2xl font-bold">Irregularidades</h1>
+      <h1 className="text-2xl font-bold">Unusual</h1>
       <Tabs defaultValue="irregularities" className="space-y-4">
         <TabsList>
-          <TabsTrigger value="irregularities">Irregularidades</TabsTrigger>
+          <TabsTrigger value="irregularities">Unusual</TabsTrigger>
           <TabsTrigger value="lines">Linhas</TabsTrigger>
         </TabsList>
 
