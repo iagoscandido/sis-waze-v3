@@ -1,7 +1,4 @@
-// components/RouteCard.tsx
 import { BaseCard } from "@/components/BaseCard";
-import { StatBox } from "@/components/StatBox";
-import { Badge } from "@/components/ui/badge";
 import {
   getRouteStatus,
   getSeverityBg,
@@ -9,7 +6,7 @@ import {
   jamLevels,
   statusLabel,
 } from "@/lib/utils/route-utils";
-import { TrendingDownIcon, TrendingUpIcon } from "lucide-react";
+import { Separator } from "../ui/separator";
 
 interface RouteCardProps {
   route: string;
@@ -22,8 +19,7 @@ interface RouteCardProps {
   trendPercentage?: number;
   lat: number;
   lon: number;
-  zoom?: number;
-  navigate?: boolean;
+
   fromLat: number;
   fromLon: number;
 }
@@ -39,8 +35,7 @@ export const RouteCard = ({
   trendPercentage = 0,
   lat,
   lon,
-  zoom = 17,
-  navigate = true,
+
   fromLat,
   fromLon,
 }: RouteCardProps) => {
@@ -52,14 +47,10 @@ export const RouteCard = ({
   const severity = getSeverityLevel(trendPercentage);
   const bgClass = getSeverityBg(severity);
 
-  const isPositive = trendPercentage >= 0;
-
   return (
     <BaseCard
       lat={lat}
       lon={lon}
-      zoom={zoom}
-      navigate={navigate}
       title={route}
       isUpdating={isUpdating}
       isNewData={isNewData}
@@ -67,30 +58,16 @@ export const RouteCard = ({
       showButtons={true}
       fromLat={fromLat}
       fromLon={fromLon}
-      headerAction={
-        <Badge
-          variant="secondary"
-          className="bg-white/20 rounded-lg text-white text-opacity-70 px-1 py-0.5"
-        >
-          {isPositive ? <TrendingUpIcon /> : <TrendingDownIcon />}
-          {trendPercentage.toFixed(1)}%
-        </Badge>
-      }
+      trendingPercentage={trendPercentage}
     >
-      <div className="col-span-full flex flex-col space-y-2 mb-2 text-white text-opacity-80 text-sm">
-        <StatBox
-          label="Status"
-          value={`${statusLabel[status]}`}
-          label2={"Tráfego"}
-          value2={`${jamLevels[jamLevel]}`}
-        />
-        <StatBox
-          label="Média Atual"
-          value={`${currentTravelTime.toFixed(0)} min`}
-          highlight={isNewData}
-          label2="Média Histórica"
-          value2={`${averageTravelTime.toFixed(0)} min`}
-        />
+      <div className="flex flex-wrap gap-1 text-white text-opacity-80 text-md text-pretty">
+        <p>Status: {`${statusLabel[status]}`}</p>
+        <Separator />
+        <p>Tráfego: {`${jamLevels[jamLevel]}`}</p>
+        <Separator />
+        <p>Média Atual: {`${currentTravelTime.toFixed(0)} min`}</p>
+        <Separator />
+        <p>Média Histórica: {`${averageTravelTime.toFixed(0)} min`}</p>
       </div>
     </BaseCard>
   );

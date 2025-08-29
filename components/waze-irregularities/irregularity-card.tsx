@@ -1,13 +1,12 @@
-import { TrendingDownIcon, TrendingUpIcon } from "lucide-react";
 import { BaseCard } from "@/components/BaseCard";
-import { StatBox } from "@/components/StatBox";
-import { Badge } from "@/components/ui/badge";
 import { getSeverityBg, getSeverityLevel } from "@/lib/utils/route-utils";
+import { Separator } from "../ui/separator";
 
 interface CardIrregularityProps {
   id: string;
-  city: string;
+
   street: string;
+  city: string;
 
   seconds: number;
   delaySeconds: number;
@@ -39,7 +38,6 @@ interface CardIrregularityProps {
 }
 
 const CardIrregularity = ({
-  city,
   street,
   seconds,
   delaySeconds,
@@ -49,12 +47,11 @@ const CardIrregularity = ({
   speed,
   jamLevel,
   length,
-  updateDate,
-  detectionDate,
+
   isUpdating = false,
   isNewData = false,
   severity = 0,
-  id,
+
   causeType,
   lat,
   lon,
@@ -65,8 +62,6 @@ const CardIrregularity = ({
 
   const severityLevel = getSeverityLevel(speedPercentage);
   const bgClass = getSeverityBg(severityLevel);
-
-  const isPositive = speedPercentage >= 0;
 
   return (
     <BaseCard
@@ -79,59 +74,31 @@ const CardIrregularity = ({
       lon={lon}
       lat={lat}
       showButtons={true}
-      headerAction={
-        <Badge
-          variant={"secondary"}
-          className="bg-white/20 rounded-lg text-xs text-white text-opacity-70"
-        >
-          {isPositive ? <TrendingUpIcon /> : <TrendingDownIcon />}
-          {speedPercentage.toFixed(1)}%
-        </Badge>
-      }
+      trendingPercentage={speedPercentage}
+      description={causeType}
     >
-      <div className="col-span-full flex flex-col space-y-2 mb-2 text-white text-opacity-80 text-sm">
-        <StatBox label="Id" value={id} />
-        <StatBox label="Cidade" value={city} />
-        <StatBox
-          label="Comprimento"
-          value={`${(length * 0.001).toFixed(3)} Km`}
-        />
-        <StatBox
-          label="Velocidade Atual"
-          value={`${speed} km/h`}
-          label2="Velocidade Regular"
-          value2={`${regularSpeed} km/h`}
-        />
-        <StatBox
-          value2={`${(delaySeconds / 60).toFixed(0)}min`}
-          label2="Atraso"
-          value={`${(seconds / 60).toFixed(0)}min`}
-          label="Tempo"
-        />
-        <StatBox
-          label="Trafego"
-          value={`${jamLevel}`}
-          label2="Severidade"
-          value2={severity}
-        />
-
-        {causeType && <StatBox label="Causa" value={causeType} />}
+      <div className="flex flex-wrap gap-1 text-white text-opacity-80 text-md text-pretty">
+        <p>
+          Velocidade Ataul x Histórica: {`${speed} km/h`} x
+          {`${regularSpeed} km/h`}
+        </p>
+        <Separator />
+        <p>Comprimento: {`${(length * 0.001).toFixed(3)} Km`}</p>
+        <Separator />
+        <p>Atraso: {`${(delaySeconds / 60).toFixed(0)}min`}</p>
+        <Separator />
+        <p>Tempo: {`${(seconds / 60).toFixed(0)}min`}</p>
+        <p>
+          Trafego: {`${jamLevel}`} / Severidade: {severity}
+        </p>
+        <Separator />
 
         {(startNode || endNode) && (
-          <StatBox
-            label="Ponto inicial"
-            value={startNode || "não informado"}
-            label2="Ponto final"
-            value2={endNode || "não informado"}
-          />
+          <p>
+            Ponto inicial: {startNode || "não informado"} / Ponto final:{" "}
+            {endNode || "não informado"}
+          </p>
         )}
-
-        <StatBox
-          label="ultima detecção"
-          value={detectionDate}
-          label2="ultima atualização"
-          value2={updateDate}
-        />
       </div>
     </BaseCard>
   );

@@ -1,8 +1,8 @@
-import { ContentRoutes } from "@/components/waze-routes/route-content";
+import { Suspense } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
+import { ContentRoutes } from "@/components/waze-routes/route-content";
 import { fetchWazeRoutes } from "@/lib/server/fetchWazeRoutes";
 import { mapRoutes, sortRoutes } from "@/lib/utils/route-utils";
-import { Suspense } from "react";
 
 export default async function RoutesPage() {
   const data = await fetchWazeRoutes();

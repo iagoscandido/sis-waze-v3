@@ -1,11 +1,14 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { SortOption, SortSelect } from "@/components/SortSelect";
+import { type SortOption, SortSelect } from "@/components/SortSelect";
 import { RouteCard } from "@/components/waze-routes/route-card";
-import { sortRoutes, mapRoutes } from "@/lib/utils/route-utils";
-import { WazeRoute } from "@/lib/types/definitions";
-import { calcTrendPercentage } from "@/lib/utils/route-utils";
+import type { WazeRoute } from "@/lib/types/definitions";
+import {
+  calcTrendPercentage,
+  mapRoutes,
+  sortRoutes,
+} from "@/lib/utils/route-utils";
 
 interface ContentRoutesProps {
   initialRoutes: WazeRoute[];
