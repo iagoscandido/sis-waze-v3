@@ -7,7 +7,7 @@ const page = async () => {
   // if (!session || !session.user || session.user.role !== "ADMIN") {
   //   redirect("/login");
   // }
-  return redirect("/waze-irregularities-cards");
+  return redirect("/waze-irregularities-test/cards");
 };
 
 export default page;
