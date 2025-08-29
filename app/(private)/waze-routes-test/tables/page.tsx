@@ -1,5 +1,6 @@
 "use client";
 
+import * as React from "react";
 import {
   columnsCoordinates,
   columnsIrregularities,
@@ -9,14 +10,13 @@ import {
 import { DataTable } from "@/components/data-table";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import {
+import type {
   Coordinates,
   Irregularities,
   LengthOfJams,
   Routes,
   WazeData,
 } from "@/lib/types/routes-definitions";
-import * as React from "react";
 
 export default function WazeDataPage() {
   const [routes, setRoutes] = React.useState<Routes[]>([]);

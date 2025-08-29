@@ -1,8 +1,8 @@
 "use client";
 
-import * as React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import * as React from "react";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -24,7 +24,7 @@ interface TipoVisualizacao {
 
 const categorias: Categoria[] = [
   { title: "Rotas", href: "/waze-routes-test/" },
-  { title: "Irregularidades", href: "/waze-irregularities-test/" },
+  { title: "Unusual", href: "/waze-irregularities-test/" },
 ];
 
 const tiposVisualizacao: TipoVisualizacao[] = [

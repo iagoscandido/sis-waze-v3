@@ -1,13 +1,11 @@
 "use client";
 
-import React from "react";
 import { usePathname } from "next/navigation";
 import { Navbar } from "@/components/nav-bar";
-import { LogoutButton } from "./logout/LogoutButton";
 
 // Mapeamento de títulos e descrições por rota
 const pageMeta: Record<string, { title: string; description: string }> = {
-  "/waze-routes-test/tabela": {
+  "/waze-routes-test/tables": {
     title: "Rotas - Tabela",
     description: "Visualização das rotas em formato de tabela.",
   },
@@ -15,16 +13,16 @@ const pageMeta: Record<string, { title: string; description: string }> = {
     title: "Rotas - Cards",
     description: "Visualização das rotas em formato de cards.",
   },
-  "/waze-irregularities-test/tabela": {
-    title: "Irregularidades - Tabela",
-    description: "Visualização das irregularidades em tabela.",
+  "/waze-irregularities-test/tables": {
+    title: "Unusual - Tabela",
+    description: "Visualização das Unusual em tabela.",
   },
-  "/waze-irregularitites-test/cards": {
-    title: "Irregularidades - Cards",
-    description: "Visualização das irregularidades em cards.",
+  "/waze-irregularities-test/cards": {
+    title: "Unusual - Cards",
+    description: "Visualização das Unusual em cards.",
   },
-  "/rotas": { title: "Rotas", description: "Visualização geral das rotas." },
-  "/irregularidades": {
+  "/routes": { title: "Rotas", description: "Visualização geral das rotas." },
+  "/irregularities": {
     title: "Irregularidades",
     description: "Visualização geral das irregularidades.",
   },
@@ -44,9 +42,6 @@ const Topbar = () => {
         <div>
           <h1 className="text-3xl font-bold text-gray-900">{title}</h1>
           <p className="text-gray-600 mt-1">{description}</p>
-        </div>
-        <div>
-          <LogoutButton text="Sair" />
         </div>
         <Navbar />
       </div>
