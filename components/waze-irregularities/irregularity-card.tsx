@@ -78,9 +78,9 @@ const CardIrregularity = ({
       description={causeType}
     >
       <div className="flex flex-wrap gap-1 text-white text-opacity-80 text-md text-pretty">
+        <p>Velocidade Atual x Histórica:</p>
         <p>
-          Velocidade Ataul x Histórica: {`${speed} km/h`} x
-          {`${regularSpeed} km/h`}
+          {`${speed} km/h`} x{`${regularSpeed} km/h`}
         </p>
         <Separator />
         <p>Comprimento: {`${(length * 0.001).toFixed(3)} Km`}</p>
@@ -88,17 +88,14 @@ const CardIrregularity = ({
         <p>Atraso: {`${(delaySeconds / 60).toFixed(0)}min`}</p>
         <Separator />
         <p>Tempo: {`${(seconds / 60).toFixed(0)}min`}</p>
+        <Separator />
+
         <p>
           Trafego: {`${jamLevel}`} / Severidade: {severity}
         </p>
         <Separator />
-
-        {(startNode || endNode) && (
-          <p>
-            Ponto inicial: {startNode || "não informado"} / Ponto final:{" "}
-            {endNode || "não informado"}
-          </p>
-        )}
+        {startNode && <span>Ponto inicial: {startNode}</span>}
+        {endNode && <span>Ponto inicial: {endNode}</span>}
       </div>
     </BaseCard>
   );
