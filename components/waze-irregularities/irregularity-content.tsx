@@ -7,7 +7,6 @@ import { Skeleton } from "@/components/ui/skeleton";
 import CardIrregularity from "@/components/waze-irregularities/irregularity-card";
 import { fetchLatestIrregularitiesAction } from "@/lib/server/actions/irregularitiesActions";
 import type { Irregularities } from "@/lib/types/irregularities";
-import { formatDate } from "@/lib/utils/data-utils";
 import { sortIrregularities } from "@/lib/utils/irregularitites-utils";
 
 interface ContentIrregularitiesProps {
@@ -131,8 +130,6 @@ export const ContentIrregularities = ({
               regularSpeed={i.regularSpeed}
               length={i.length}
               speed={i.speed}
-              updateDate={formatDate(i.updateDate)}
-              detectionDate={formatDate(i.detectionDate)}
               severity={i.severity}
               jamLevel={i.jamLevel}
               isUpdating={isPending}

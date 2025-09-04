@@ -3,7 +3,7 @@ import { ThemeProvider } from "next-themes";
 import "./globals.css";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
-import { QueryProvider } from "@/components/query-provider";
+import CoreProvider from "@/app/tests/card/core-provider";
 
 export const metadata: Metadata = {
   title: "Monitoramento de Rotas",
@@ -21,7 +21,7 @@ export default function RootLayout({
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       </head>
       <body className={`antialiased`}>
-        <QueryProvider>
+        <CoreProvider>
           <ThemeProvider
             attribute="class"
             defaultTheme="system"
@@ -30,7 +30,7 @@ export default function RootLayout({
           >
             {children}
           </ThemeProvider>
-        </QueryProvider>
+        </CoreProvider>
         <SpeedInsights />
         <Analytics />
       </body>

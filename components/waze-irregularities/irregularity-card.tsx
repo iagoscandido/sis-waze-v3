@@ -1,5 +1,5 @@
 import { BaseCard } from "@/components/BaseCard";
-import { getSeverityBg, getSeverityLevel } from "@/lib/utils/route-utils";
+import { getPercentageLevel, getSeverityBg } from "@/lib/utils/route-utils";
 import { Separator } from "../ui/separator";
 
 interface CardIrregularityProps {
@@ -20,8 +20,8 @@ interface CardIrregularityProps {
   jamLevel: number;
   length: number;
 
-  updateDate: string;
-  detectionDate: string;
+  updateDate?: string;
+  detectionDate?: string;
 
   isUpdating?: boolean;
   isNewData?: boolean;
@@ -60,7 +60,7 @@ const CardIrregularity = ({
 }: CardIrregularityProps) => {
   const speedPercentage = (speed / regularSpeed) * 100;
 
-  const severityLevel = getSeverityLevel(speedPercentage);
+  const severityLevel = getPercentageLevel(speedPercentage);
   const bgClass = getSeverityBg(severityLevel);
 
   return (
