@@ -1,4 +1,4 @@
-import { WazeRoute } from "@/lib/types/definitions";
+import type { WazeRoute } from "@/lib/types/definitions";
 
 export async function fetchWazeRoutes(): Promise<{
   routes: WazeRoute[];
