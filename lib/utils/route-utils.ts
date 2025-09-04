@@ -1,11 +1,11 @@
-import { WazeRoute } from "@/lib/types/definitions";
+import type { WazeRoute } from "@/lib/types/definitions";
 
 export type Severity = "low" | "normal" | "high" | "critical";
 export type Status = "low" | "normal" | "high" | "critical";
 
 export function calcTrendPercentage(
   currentTravelTimeSeconds: number,
-  historicTimeSeconds: number,
+  historicTimeSeconds: number
 ) {
   if (historicTimeSeconds === 0) return 0;
   return (
@@ -57,7 +57,7 @@ export function sortRoutes(routes: WazeRoute[], value: string) {
 export function getRouteStatus(
   current: number,
   average: number,
-  tolerance?: number,
+  tolerance?: number
 ): Status {
   const tol = tolerance ?? current * 0.3;
   if (current <= average - tol) return "low";
@@ -65,7 +65,7 @@ export function getRouteStatus(
   return "normal";
 }
 
-export function getSeverityLevel(percentage: number): Severity {
+export function getPercentageLevel(percentage: number): Severity {
   if (percentage <= 30) return "low";
   if (percentage <= 80) return "normal";
   if (percentage <= 100) return "high";
