@@ -2,7 +2,7 @@
 
 import { TrendingDownIcon, TrendingUpIcon } from "lucide-react";
 import type { ReactNode } from "react";
-import MapButtons from "@/components/map-buttons";
+import { MapButton } from "@/components/map-button";
 import { Badge } from "@/components/ui/badge";
 import {
   Card,
@@ -66,9 +66,9 @@ export const BaseCard = ({
 
         <CardAction>
           {showButtons && (
-            <MapButtons
-              lat={lat}
-              lon={lon}
+            <MapButton
+              toLat={lat}
+              toLon={lon}
               fromLat={fromLat}
               fromLon={fromLon}
             />
