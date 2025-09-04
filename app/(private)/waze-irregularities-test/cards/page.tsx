@@ -1,5 +1,3 @@
-import { Suspense } from "react";
-import { Skeleton } from "@/components/ui/skeleton";
 import { ContentIrregularities } from "@/components/waze-irregularities/irregularity-content";
 import { fetchLatestIrregularitiesAction } from "@/lib/server/actions/irregularitiesActions";
 import {

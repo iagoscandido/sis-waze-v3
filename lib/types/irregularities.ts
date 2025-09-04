@@ -7,7 +7,7 @@ export interface Bbox {
 export interface IrregularitiesJsonData {
   alerts: [];
   endTimeMillis: number;
-  irregularitites: Irregularities[];
+  irregularities: Irregularities[];
   startTimeMillis: number;
   startTime: number;
   endTime: number;
@@ -20,10 +20,8 @@ export interface Line {
 }
 
 export interface Irregularities {
-  country: string;
   nThumbsUp: number;
   updateDate: string;
-  trend: number;
   city: string;
   line: Line[];
   detectionDateMillis: number;

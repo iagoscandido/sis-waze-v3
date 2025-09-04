@@ -1,8 +1,5 @@
-"use client";
-
 import { TrendingDownIcon, TrendingUpIcon } from "lucide-react";
 import type { ReactNode } from "react";
-import { MapButton } from "@/components/map-button";
 import { Badge } from "@/components/ui/badge";
 import {
   Card,
@@ -14,80 +11,69 @@ import {
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
+import { getTrendingPercentage } from "@/lib/utils/math";
+import { getPercentageLevel, getSeverityBg } from "@/lib/utils/route-utils";
 
-interface BaseCardProps {
+interface CardTestProps {
   title: string;
-  children: ReactNode;
-  isUpdating?: boolean;
-  isNewData?: boolean;
-  className?: string;
-  headerAction?: ReactNode;
-  showButtons?: boolean;
-  lat: number;
-  lon: number;
-  fromLat: number;
-  fromLon: number;
   description?: string;
-  trendingPercentage?: number;
+  children: ReactNode;
+  className?: string;
+  delay: number;
+  seconds: number;
+  isNewData?: boolean;
+  isUpdating?: boolean;
+  action?: ReactNode;
 }
 
-export const BaseCard = ({
+export const CardTest = async ({
   title,
-  children,
-  isUpdating = false,
-  isNewData = false,
-  className,
-  showButtons = false,
-  lat,
-  lon,
-  fromLat,
-  fromLon,
   description,
-  trendingPercentage = 0,
-}: BaseCardProps) => {
+  children,
+
+  delay,
+  seconds,
+  action,
+  isNewData = false,
+  isUpdating = false,
+}: CardTestProps) => {
+  const trendingPercentage = getTrendingPercentage(delay, seconds);
+  const severityLevel = getPercentageLevel(trendingPercentage);
+  const bgClass = getSeverityBg(severityLevel);
+
   return (
     <Card
       className={cn(
-        "h-full w-full transition-all duration-300 rounded-sm",
+        `w-full max-w-sm transition duration-300 hover:scale-105 ${bgClass}`,
         {
           "ring-4 ring-primary/30": isUpdating,
           "ring-4 ring-green-300 dark:ring-green-600 ring-opacity-75 animate-pulse":
             isNewData,
         },
-        className,
       )}
     >
       {/* Header */}
-      <CardHeader className="flex flex-wrap items-center justify-between">
-        <CardTitle className="font-medium text-white text-wrap">
+      <CardHeader className="flex items-center justify-between">
+        <CardTitle className="font-medium text-white">
           {title || "Não informado"}
           {description && <CardDescription>{description}</CardDescription>}
         </CardTitle>
 
-        <CardAction>
-          {showButtons && (
-            <MapButton
-              toLat={lat}
-              toLon={lon}
-              fromLat={fromLat}
-              fromLon={fromLon}
-            />
-          )}
-        </CardAction>
+        {action && <CardAction>{action}</CardAction>}
         <CardAction>
           <Badge
             variant={"secondary"}
             className="bg-white/20 rounded-lg text-xs text-white text-opacity-70"
           >
             {trendingPercentage < 0 ? <TrendingUpIcon /> : <TrendingDownIcon />}
-            {trendingPercentage.toFixed(1)}%
+            {trendingPercentage.toFixed(2)}%
           </Badge>
         </CardAction>
       </CardHeader>
       <Separator />
 
       <CardContent>
-        <div className="flex text-md p-2">{children}</div>
+        <div>{children}</div>
       </CardContent>
     </Card>
   );
