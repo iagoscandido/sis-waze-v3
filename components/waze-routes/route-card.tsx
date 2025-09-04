@@ -1,8 +1,8 @@
 import { BaseCard } from "@/components/BaseCard";
 import {
+  getPercentageLevel,
   getRouteStatus,
   getSeverityBg,
-  getSeverityLevel,
   jamLevels,
   statusLabel,
 } from "@/lib/utils/route-utils";
@@ -44,7 +44,7 @@ export const RouteCard = ({
     averageTravelTime,
     tolerance,
   );
-  const severity = getSeverityLevel(trendPercentage);
+  const severity = getPercentageLevel(trendPercentage);
   const bgClass = getSeverityBg(severity);
 
   return (
