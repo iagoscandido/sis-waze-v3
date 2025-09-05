@@ -9,13 +9,16 @@ export async function fetchLatestIrregularitiesAction(): Promise<
   Irregularities[]
 > {
   try {
-    const baseUrl = process.env.WAZE_GERAL_API_URL;
+    const baseUrl = process.env.WAZE_GERAL_API_URL ?? "";
     if (!baseUrl) {
       console.warn("WAZE_GERAL_API_URL não definido. Retornando vazio.");
       return [];
     }
+    const url = baseUrl
+      ? `${baseUrl}/api/tests/external/waze-geral`
+      : "/api/tests/external/waze-geral";
 
-    const res = await fetch(`${baseUrl}/api/tests/external/waze-geral`, {
+    const res = await fetch(url, {
       cache: "no-store",
     });
 
