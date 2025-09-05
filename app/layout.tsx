@@ -3,7 +3,7 @@ import { ThemeProvider } from "next-themes";
 import "./globals.css";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
-import CoreProvider from "@/app/tests/card/core-provider";
+import CoreProvider from "@/components/components-test/core-provider";
 
 export const metadata: Metadata = {
   title: "Monitoramento de Rotas",

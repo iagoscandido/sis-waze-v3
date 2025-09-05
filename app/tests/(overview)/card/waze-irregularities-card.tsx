@@ -25,8 +25,7 @@ export default function WazeIrregularities() {
     staleTime: 1000 * 60 * 2,
   });
 
-  // 🔄 estados de carregamento e erro
-  if (isPending) return <Skeleton className="w-full h-32" />;
+  if (isPending) return <p className="text-gray-500">Carregando...</p>;
   if (isError)
     return <div className="text-red-500">Erro ao carregar dados</div>;
   if (!irregularities || irregularities.length === 0) {

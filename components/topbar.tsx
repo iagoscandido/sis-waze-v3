@@ -3,7 +3,6 @@
 import { usePathname } from "next/navigation";
 import { Navbar } from "@/components/nav-bar";
 
-// Mapeamento de títulos e descrições por rota
 const pageMeta: Record<string, { title: string; description: string }> = {
   "/waze-routes-test/tables": {
     title: "Rotas - Tabela",

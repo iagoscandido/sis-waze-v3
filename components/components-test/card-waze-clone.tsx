@@ -1,16 +1,15 @@
 import { TrendingDownIcon, TrendingUpIcon } from "lucide-react";
 import type { FC, ReactNode } from "react";
 import { Badge } from "@/components/ui/badge";
-import { CardAction } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import { getTrendingPercentage } from "@/lib/utils/math";
-import { getPercentageLevel, getSeverityBg } from "@/lib/utils/route-utils";
+import { getPercentageLevel, getSeverityColors } from "@/lib/utils/route-utils";
 
 export type Metric = {
   id: string;
   label: string;
   value?: ReactNode;
-  group?: string; // agrupa métricas relacionadas
+  group?: string;
 };
 
 export type WazeCardProps = {
@@ -30,7 +29,6 @@ const WazeCard: FC<WazeCardProps> = ({
   updatedAgo,
   delay,
   seconds,
-
   isNewData = false,
   isUpdating = false,
   action,
@@ -38,14 +36,13 @@ const WazeCard: FC<WazeCardProps> = ({
 }) => {
   const trendingPercentage = getTrendingPercentage(delay, seconds);
   const severityLevel = getPercentageLevel(trendingPercentage);
-  const bgClass = getSeverityBg(severityLevel);
 
-  // Filtra apenas métricas com valor
+  const severityColors = getSeverityColors(severityLevel);
+
   const visibleMetrics = metrics.filter(
     (m) => m.value != null && m.value !== "",
   );
 
-  // Agrupa métricas por group
   const groupedMetrics = visibleMetrics.reduce<Record<string, Metric[]>>(
     (acc, metric) => {
       const group = metric.group || metric.id;
@@ -59,45 +56,51 @@ const WazeCard: FC<WazeCardProps> = ({
   return (
     <div
       className={cn(
-        "relative w-80 rounded-lg border border-gray-300 bg-white shadow-md overflow-hidden transition duration-300 hover:scale-102",
+        "relative w-80 rounded-lg bg-neutral-900 shadow-lg overflow-hidden",
+        "transition duration-300 hover:scale-102 flex flex-col",
+        "border-t-4",
+        severityColors.border,
         {
-          "ring-4 ring-primary/30": isUpdating,
-          "ring-4 ring-green-300 dark:ring-green-600 ring-opacity-75 animate-pulse":
-            isNewData,
+          "ring-2 ring-blue-500": isUpdating,
+          "ring-2 ring-green-500 animate-pulse": isNewData,
         },
       )}
     >
-      {/* Indicador de severidade */}
-      <div className={`w-full h-2 ${bgClass}`} />
-
-      {/* Conteúdo */}
-      <div className="p-4 space-y-2">
+      <div className="flex-grow p-4 space-y-4">
+        {" "}
+        {/* Aumentado o space-y */}
         {/* Cabeçalho */}
-        <header className="flex justify-between">
-          <h2 className="font-bold text-gray-800">{title}</h2>
-          <CardAction>
-            <Badge
-              variant="primary"
-              className={`bg-white/20 rounded-lg text-xs text-white text-opacity-70 ${bgClass}`}
-            >
-              {trendingPercentage < 0 ? (
-                <TrendingUpIcon />
-              ) : (
-                <TrendingDownIcon />
-              )}
-              {trendingPercentage.toFixed(2)}%
-            </Badge>
-          </CardAction>
+        <header className="flex justify-between items-center">
+          {/* 2. Título agora usa a cor de severidade para destaque */}
+          <h2 className={cn("font-bold text-lg", severityColors.text)}>
+            {title}
+          </h2>
+          <Badge
+            className={cn(
+              // 3. Badge com fundo sutil e texto branco para alto contraste
+              "text-xs text-white rounded-md",
+              severityColors.badgeBg,
+            )}
+          >
+            {trendingPercentage > 0 ? (
+              <TrendingUpIcon size={16} className="inline-block mr-1" />
+            ) : (
+              <TrendingDownIcon size={16} className="inline-block mr-1" />
+            )}
+            {trendingPercentage.toFixed(2)}%
+          </Badge>
         </header>
-
         {/* Métricas agrupadas */}
-        <div className="space-y-0.5">
+        <div className="space-y-3">
           {Object.entries(groupedMetrics).map(([groupName, group]) => (
-            <div key={groupName} className="flex flex-wrap gap-4">
+            <div key={groupName} className="flex flex-wrap -mx-2">
               {group.map((metric) => (
-                <div key={metric.id} className="flex flex-col">
-                  <span className="text-gray-500 text-xs">{metric.label}</span>
-                  <span className="font-medium text-gray-700">
+                <div key={metric.id} className="flex flex-col px-2">
+                  {/* 4. Hierarquia visual clara: label mais sutil, valor em destaque */}
+                  <span className="text-neutral-400 text-xs uppercase tracking-wider">
+                    {metric.label}
+                  </span>
+                  <span className="font-semibold text-base text-neutral-100">
                     {metric.value}
                   </span>
                 </div>
@@ -105,21 +108,17 @@ const WazeCard: FC<WazeCardProps> = ({
             </div>
           ))}
         </div>
-
-        {/* Data de atualização */}
-        {updatedAgo && <p className="text-gray-500 text-sm">{updatedAgo}</p>}
       </div>
-      <br />
-      <footer className="flex justify-end items-center p-2 border-t border-gray-200 ">
+
+      {/* Footer com informações de tempo e ação */}
+      <footer className="flex-shrink-0 flex justify-between items-center p-3 border-t border-white/10">
+        {/* 5. Texto de atualização com cor sutil */}
+        <span className="text-neutral-500 text-xs">{updatedAgo || "..."}</span>
         {action && (
-          <div>
-            <CardAction>
-              <Badge
-                className={`bg-white/20 rounded-lg text-xs text-white text-opacity-70 ${bgClass}`}
-              >
-                {action}
-              </Badge>
-            </CardAction>
+          <div className={cn("p-2 rounded-full", severityColors.badgeBg)}>
+            <span className={cn("text-white", severityColors.text)}>
+              {action}
+            </span>
           </div>
         )}
       </footer>

@@ -1,4 +1,4 @@
-import WazeIrregularities from "./waze-irregularities-card";
+import WazeIrregularities from "@/app/tests/(overview)/card/waze-irregularities-card";
 
 export default function Page() {
   return (
