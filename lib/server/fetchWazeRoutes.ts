@@ -6,7 +6,7 @@ export async function fetchWazeRoutes(): Promise<{
   const url =
     process.env.WAZE_API_URL ??
     `${process.env.NEXT_PUBLIC_APP_URL ?? ""}/api/waze`;
-  const res = await fetch(url, { next: { revalidate: 10 } });
+  const res = await fetch(url, { cache: "no-store" });
   if (!res.ok) {
     throw new Error(`Falha ao buscar rotas: ${res.status}`);
   }

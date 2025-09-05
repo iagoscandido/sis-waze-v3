@@ -15,7 +15,6 @@ async function fetchIrregularities(): Promise<Irregularities[]> {
     },
   );
   const data = await res.json();
-  console.log("fetch");
   return data.irregularities;
 }
 

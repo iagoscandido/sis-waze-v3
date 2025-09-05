@@ -1,9 +1,9 @@
-"use server";
-
 import type { Irregularities } from "@/lib/types/irregularities";
 import { mapIrregularities } from "@/lib/utils/irregularitites-utils";
 
 type FetchResult = { irregularities: Irregularities[] };
+
+export const dynamic = "force-dynamic";
 
 export async function fetchLatestIrregularitiesAction(): Promise<
   Irregularities[]
@@ -14,9 +14,13 @@ export async function fetchLatestIrregularitiesAction(): Promise<
       console.warn("WAZE_GERAL_API_URL não definido. Retornando vazio.");
       return [];
     }
+    // const url = "/api/tests/external/waze-geral";
+
     const url = baseUrl
       ? `${baseUrl}/api/tests/external/waze-geral`
       : "/api/tests/external/waze-geral";
+
+    console.log("[fetchIrregularities] URL:", url);
 
     const res = await fetch(url, {
       cache: "no-store",
