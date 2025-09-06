@@ -9,9 +9,9 @@ export const experimental_ppr = true;
 
 async function fetchIrregularities(): Promise<Irregularities[]> {
   const res = await fetch(
-    "http://localhost:3000/api/tests/external/waze-geral",
+    `${process.env.WAZE_GERAL_API_URL ?? ""}/api/tests/external/waze-geral`,
     {
-      next: { revalidate: 10 },
+      cache: "no-store",
     },
   );
   const data = await res.json();
