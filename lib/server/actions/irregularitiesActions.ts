@@ -9,17 +9,17 @@ export async function fetchLatestIrregularitiesAction(): Promise<
   Irregularities[]
 > {
   try {
-    const baseUrl = process.env.WAZE_GERAL_API_URL ?? "";
-    if (!baseUrl) {
-      console.warn("WAZE_GERAL_API_URL não definido. Retornando vazio.");
-      return [];
-    }
-    // const url = "/api/tests/external/waze-geral";
+    // const baseUrl = process.env.WAZE_GERAL_API_URL;
+    const baseUrl = "https://sis-waze.vercel.app";
 
-    const url = baseUrl
-      ? `${baseUrl}/api/tests/external/waze-geral`
-      : "/api/tests/external/waze-geral";
+    // if (!baseUrl) {
+    //   console.warn("WAZE_GERAL_API_URL não definido. Retornando vazio.");
+    //   return [];
+    // }
 
+    const url = `${baseUrl}/api/tests/external/waze-geral`;
+
+    console.log("[fetchIrregularities] BASEURL:", baseUrl);
     console.log("[fetchIrregularities] URL:", url);
 
     const res = await fetch(url, {
