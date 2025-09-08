@@ -85,9 +85,9 @@ const CardIrregularity = ({
         <Separator />
         <p>Comprimento: {`${(length * 0.001).toFixed(3)} Km`}</p>
         <Separator />
-        <p>Atraso: {`${(delaySeconds / 60).toFixed(0)}min`}</p>
+        <p>Tempo Atual: {`${((delaySeconds + seconds) / 60).toFixed(0)}min`}</p>
         <Separator />
-        <p>Tempo: {`${(seconds / 60).toFixed(0)}min`}</p>
+        <p>Tempo Médio: {`${(seconds / 60).toFixed(0)}min`}</p>
         <Separator />
 
         <p>

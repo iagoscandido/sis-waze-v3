@@ -79,7 +79,7 @@ export const BaseCard = ({
             variant={"secondary"}
             className="bg-white/20 rounded-lg text-xs text-white text-opacity-70"
           >
-            {trendingPercentage < 0 ? <TrendingUpIcon /> : <TrendingDownIcon />}
+            {trendingPercentage > 0 ? <TrendingUpIcon /> : <TrendingDownIcon />}
             {trendingPercentage.toFixed(1)}%
           </Badge>
         </CardAction>
