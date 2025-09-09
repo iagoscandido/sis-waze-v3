@@ -19,6 +19,7 @@ import {
 import ThemeToggle from "@/components/ui/theme-toggle";
 import { cn } from "@/lib/utils";
 import MobileMenuIcon from "../mobile/menu-icon";
+import LegendPopover from "./legend";
 
 type NavItem = {
   href?: string;
@@ -154,6 +155,7 @@ export default function NavbarTest() {
         </div>
         {/* Right side */}
         <div className="flex items-center gap-2">
+          <LegendPopover />
           <ThemeToggle />
         </div>
       </div>
