@@ -1,9 +1,11 @@
-import { TrendingDownIcon, TrendingUpIcon } from "lucide-react";
 import type { FC, ReactNode } from "react";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
-import { getTrendingPercentage } from "@/lib/utils/math";
-import { getPercentageLevel, getSeverityColors } from "@/lib/utils/route-utils";
+import type { TrendLevel } from "@/lib/utils/irregularities-utils";
+import {
+  getPercentageVisuals,
+  getTrendVisuals,
+} from "@/lib/utils/irregularities-utils";
 
 export type Metric = {
   id: string;
@@ -22,22 +24,23 @@ export type WazeCardProps = {
   isUpdating?: boolean;
   action?: ReactNode;
   metrics?: Metric[];
+  trend: TrendLevel;
+  className?: string;
 };
 
 const WazeCard: FC<WazeCardProps> = ({
   title,
-  updatedAgo,
   delay,
   seconds,
   isNewData = false,
   isUpdating = false,
   action,
+  severity,
   metrics = [],
+  trend,
 }) => {
-  const trendingPercentage = getTrendingPercentage(delay, seconds);
-  const severityLevel = getPercentageLevel(trendingPercentage);
-
-  const severityColors = getSeverityColors(severityLevel);
+  const trendVisuals = getTrendVisuals(trend);
+  const PercentageVisuals = getPercentageVisuals(seconds + delay, delay);
 
   const visibleMetrics = metrics.filter(
     (m) => m.value != null && m.value !== "",
@@ -59,7 +62,8 @@ const WazeCard: FC<WazeCardProps> = ({
         "relative w-80 rounded-lg bg-neutral-900 shadow-lg overflow-hidden",
         "transition duration-300 hover:scale-102 flex flex-col",
         "border-t-4",
-        severityColors.border,
+        // severityColors.border,
+        PercentageVisuals.bgColor,
         {
           "ring-2 ring-blue-500": isUpdating,
           "ring-2 ring-green-500 animate-pulse": isNewData,
@@ -68,27 +72,30 @@ const WazeCard: FC<WazeCardProps> = ({
     >
       <div className="flex-grow p-4 space-y-4">
         {" "}
-        {/* Aumentado o space-y */}
-        {/* Cabeçalho */}
-        <header className="flex justify-between items-center">
-          {/* 2. Título agora usa a cor de severidade para destaque */}
-          <h2 className={cn("font-bold text-lg", severityColors.text)}>
-            {title}
+        {/* header */}
+        <header className="flex justify-between items-center gap-1">
+          <h2 className={cn("font-bold text-pretty")}>
+            {title || "Não informado"}
           </h2>
-          <Badge
-            className={cn(
-              // 3. Badge com fundo sutil e texto branco para alto contraste
-              "text-xs text-white rounded-md",
-              severityColors.badgeBg,
-            )}
-          >
-            {trendingPercentage > 0 ? (
-              <TrendingUpIcon size={16} className="inline-block mr-1" />
-            ) : (
-              <TrendingDownIcon size={16} className="inline-block mr-1" />
-            )}
-            {trendingPercentage.toFixed(2)}%
-          </Badge>
+
+          {/* icons */}
+          <div className="flex items-center gap-1">
+            {/* Trend Icon */}
+            <Badge
+              className={cn("text-white rounded-md", trendVisuals.bgColor)}
+            >
+              {}
+              <trendVisuals.icon size={16} />
+            </Badge>
+            {/* Trending Percentage */}
+            <Badge
+              className={cn("text-white rounded-md", PercentageVisuals.badgeBg)}
+            >
+              {}
+              <PercentageVisuals.icon size={16} />
+              {PercentageVisuals.percentage.toFixed(1)}%
+            </Badge>
+          </div>
         </header>
         {/* Métricas agrupadas */}
         <div className="space-y-3">
@@ -112,14 +119,12 @@ const WazeCard: FC<WazeCardProps> = ({
 
       {/* Footer com informações de tempo e ação */}
       <footer className="flex-shrink-0 flex justify-between items-center p-3 border-t border-white/10">
-        {/* 5. Texto de atualização com cor sutil */}
-        <span className="text-neutral-500 text-xs">{updatedAgo || "..."}</span>
         {action && (
-          <div className={cn("p-2 rounded-full", severityColors.badgeBg)}>
-            <span className={cn("text-white", severityColors.text)}>
-              {action}
-            </span>
-          </div>
+          <Badge
+            className={cn("text-white rounded-md", PercentageVisuals.bgColor)}
+          >
+            {action}
+          </Badge>
         )}
       </footer>
     </div>
