@@ -85,32 +85,36 @@ export function getSeverityColors(sev: Severity): {
   border: string;
   text: string;
   badgeBg: string;
+  bg: string;
 } {
   switch (sev) {
     case "low":
       return {
         border: "border-green-500",
         text: "text-green-400",
-        badgeBg: "bg-green-500/20", // Fundo com opacidade
+        badgeBg: "bg-green-500/20",
+        bg: "bg-green-900",
       };
     case "normal":
       return {
         border: "border-yellow-500",
         text: "text-yellow-400",
         badgeBg: "bg-yellow-500/20",
+        bg: "bg-yellow-900",
       };
     case "high":
       return {
         border: "border-red-500",
         text: "text-red-400",
         badgeBg: "bg-red-500/20",
+        bg: "bg-red-900",
       };
     case "critical":
       return {
-        // Para crítico, usamos um vermelho mais intenso
         border: "border-purple-700",
         text: "text-purple-600",
         badgeBg: "bg-purple-700/20",
+        bg: "bg-purple-900",
       };
   }
 }
