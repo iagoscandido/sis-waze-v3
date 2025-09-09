@@ -31,11 +31,18 @@ interface CardIrregularityProps {
   causeType?: string;
   trendPercentage?: number;
 
+  trend?: string;
+
   lat: number;
   lon: number;
   fromLat: number;
   fromLon: number;
 }
+
+export const trendIndicator: Record<number, string> = {
+  0: "Tendencia a piorar",
+  1: "Tendencia a melhorar",
+};
 
 const CardIrregularity = ({
   street,
@@ -51,16 +58,19 @@ const CardIrregularity = ({
   isUpdating = false,
   isNewData = false,
   severity = 0,
+  trend,
 
-  causeType,
+  // causeType,
   lat,
   lon,
   fromLat,
   fromLon,
 }: CardIrregularityProps) => {
-  const speedPercentage = (speed / regularSpeed) * 100;
+  const currentTime = delaySeconds + seconds;
 
-  const severityLevel = getPercentageLevel(speedPercentage);
+  const trendPercentage = ((currentTime - seconds) / seconds) * 100;
+
+  const severityLevel = getPercentageLevel(trendPercentage);
   const bgClass = getSeverityBg(severityLevel);
 
   return (
@@ -74,10 +84,11 @@ const CardIrregularity = ({
       lon={lon}
       lat={lat}
       showButtons={true}
-      trendingPercentage={speedPercentage}
-      description={causeType}
+      trendingPercentage={trendPercentage}
+      description={""}
     >
       <div className="flex flex-wrap gap-1 text-white text-opacity-80 text-md text-pretty">
+        <p>Tendencia: {}</p>
         <p>Velocidade Atual x Histórica:</p>
         <p>
           {`${speed} km/h`} x{`${regularSpeed} km/h`}
@@ -85,11 +96,11 @@ const CardIrregularity = ({
         <Separator />
         <p>Comprimento: {`${(length * 0.001).toFixed(3)} Km`}</p>
         <Separator />
-        <p>Tempo Atual: {`${((delaySeconds + seconds) / 60).toFixed(0)}min`}</p>
+        <p>
+          Tempo Atual: {`${((delaySeconds + seconds) / 60).toFixed(0)}min`}{" "}
+          Tempo Médio: {`${(seconds / 60).toFixed(0)}min`}
+        </p>
         <Separator />
-        <p>Tempo Médio: {`${(seconds / 60).toFixed(0)}min`}</p>
-        <Separator />
-
         <p>
           Trafego: {`${jamLevel}`} / Severidade: {severity}
         </p>
