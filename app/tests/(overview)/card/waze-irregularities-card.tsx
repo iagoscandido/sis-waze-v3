@@ -47,7 +47,6 @@ export default function WazeIrregularities() {
           delay={i.delaySeconds}
           seconds={i.seconds}
           trend={i.trend as TrendLevel}
-          severity={i.severity}
           metrics={[
             {
               id: "traffic-desc",

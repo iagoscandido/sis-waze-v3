@@ -16,7 +16,7 @@ export type WazeCardProps = {
   updatedAgo?: string;
   delay: number;
   seconds: number;
-  severity: number;
+
   isNewData?: boolean;
   isUpdating?: boolean;
   action?: ReactNode;
@@ -32,7 +32,6 @@ const WazeCard: FC<WazeCardProps> = ({
   isNewData = false,
   isUpdating = false,
   action,
-  severity,
   metrics = [],
   trend,
 }) => {
