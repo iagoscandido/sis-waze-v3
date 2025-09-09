@@ -18,6 +18,7 @@ import {
 } from "@/components/ui/popover";
 import ThemeToggle from "@/components/ui/theme-toggle";
 import { cn } from "@/lib/utils";
+import MobileMenuIcon from "../mobile/menu-icon";
 
 type NavItem = {
   href?: string;
@@ -59,13 +60,13 @@ export default function NavbarTest() {
                 size="icon"
               >
                 {/* ... SVG do ícone do menu ... */}
+                <MobileMenuIcon />
               </Button>
             </PopoverTrigger>
             <PopoverContent align="start" className="w-64 p-1 md:hidden">
               <NavigationMenu className="max-w-none *:w-full">
                 <NavigationMenuList className="flex-col items-start gap-0 md:gap-2">
                   {navigationLinks.map((link) => (
-                    // FIX 1: Usando link.label em vez de index
                     <NavigationMenuItem key={link.label} className="w-full">
                       {link.submenu ? (
                         <>
