@@ -11,7 +11,7 @@ import {
   getSeverityDescription,
   type SeverityLevel,
   type TrendLevel,
-} from "@/lib/utils/irregularities-utils";
+} from "@/lib/utils/waze";
 import type { WazeIrregularityData } from "@/types/wazeData";
 
 export default function WazeIrregularities() {

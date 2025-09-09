@@ -1,11 +1,8 @@
 import type { FC, ReactNode } from "react";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
-import type { TrendLevel } from "@/lib/utils/irregularities-utils";
-import {
-  getPercentageVisuals,
-  getTrendVisuals,
-} from "@/lib/utils/irregularities-utils";
+import type { TrendLevel } from "@/lib/utils/waze";
+import { getPercentageVisuals, getTrendVisuals } from "@/lib/utils/waze";
 
 export type Metric = {
   id: string;
@@ -40,7 +37,7 @@ const WazeCard: FC<WazeCardProps> = ({
   trend,
 }) => {
   const trendVisuals = getTrendVisuals(trend);
-  const PercentageVisuals = getPercentageVisuals(seconds + delay, delay);
+  const PercentageVisuals = getPercentageVisuals(seconds + delay, seconds);
 
   const visibleMetrics = metrics.filter(
     (m) => m.value != null && m.value !== "",
