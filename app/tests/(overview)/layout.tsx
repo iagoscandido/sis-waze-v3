@@ -4,7 +4,6 @@ import type React from "react";
 import { Suspense } from "react";
 import { Footer } from "@/components/components-test/footer";
 import NavbarTest from "@/components/components-test/nav-bar-test";
-import { Skeleton } from "@/components/ui/skeleton";
 
 export const experimental_ppr = true;
 
@@ -16,11 +15,7 @@ const Layout = async ({ children }: { children: React.ReactNode }) => {
       </header>
 
       <main className="flex flex-grow flex-wrap justify-center items-center gap-1 m-3">
-        <Suspense
-          fallback={<Skeleton className="h-[125px] w-[250px] rounded-xl" />}
-        >
-          {children}
-        </Suspense>
+        <Suspense fallback={<p>Carregando...</p>}>{children}</Suspense>
       </main>
 
       <footer className="m-3">
