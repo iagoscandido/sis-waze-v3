@@ -22,7 +22,7 @@ export const ContentIrregularities = ({
   const [filteredIrregularities, setFilteredIrregularities] = useState<
     Irregularities[]
   >([]);
-  const [sortValue, setSortValue] = useState("trend_desc");
+  const [sortValue, setSortValue] = useState("delay_desc");
   const [lastUpdated, setLastUpdated] = useState<Date>(new Date());
   const [isPending, startTransition] = useTransition();
 
