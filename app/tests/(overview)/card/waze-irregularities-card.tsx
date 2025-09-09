@@ -6,9 +6,13 @@ import WazeCard from "@/components/components-test/card-waze-clone";
 import { MapButton } from "@/components/map-button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { fetchIrregularities } from "@/lib/server/actions/irregularitiesActionTest";
-import type { Irregularities } from "@/lib/types/irregularities";
-import { secondsToMinutes, timeAgo } from "@/lib/utils/date-time";
-import { getTrafficDescription } from "@/lib/utils/waze";
+import { secondsToMinutes } from "@/lib/utils/date-time";
+import {
+  getSeverityDescription,
+  type SeverityLevel,
+  type TrendLevel,
+} from "@/lib/utils/irregularities-utils";
+import type { WazeIrregularityData } from "@/types/wazeData";
 
 export default function WazeIrregularities() {
   const [intervalMs] = useState(1000 * 60 * 2);
@@ -17,7 +21,7 @@ export default function WazeIrregularities() {
     isPending,
     isError,
     isFetching,
-  } = useQuery<Irregularities[]>({
+  } = useQuery<WazeIrregularityData[]>({
     queryKey: ["irregularities"],
     queryFn: fetchIrregularities,
     refetchOnWindowFocus: true,
@@ -35,22 +39,22 @@ export default function WazeIrregularities() {
   }
 
   return (
-    <main className="flex flex-wrap justify-center-safe gap-2">
+    <main className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 justify-center">
       {irregularities.map((i) => (
         <WazeCard
           key={i.id}
           title={i.street}
           delay={i.delaySeconds}
           seconds={i.seconds}
+          trend={i.trend as TrendLevel}
           severity={i.severity}
-          updatedAgo={timeAgo(i.updateDate)}
           metrics={[
             {
               id: "traffic-desc",
               label: "Tráfego",
-              value: `${getTrafficDescription(i.severity)}`,
+              value: `${getSeverityDescription(i.severity as SeverityLevel)}`,
             },
-            { id: "cause", label: "Causa", value: i.causeType },
+            { id: "cause", label: "Causa", value: i.type },
             {
               id: "avg-speed",
               label: "Velocidade atual",
@@ -64,15 +68,15 @@ export default function WazeIrregularities() {
               group: "speed",
             },
             {
-              id: "drive-time",
-              label: "Tempo dirigindo",
-              value: `${secondsToMinutes(i.seconds).toFixed(0)} min`,
+              id: "delay-time",
+              label: "tempo atual",
+              value: `${secondsToMinutes(i.delaySeconds + i.seconds).toFixed(0)} min`,
               group: "time",
             },
             {
-              id: "delay-time",
-              label: "Atraso",
-              value: `${secondsToMinutes(i.delaySeconds).toFixed(0)} min`,
+              id: "historic-time",
+              label: "Tempo hsitórico",
+              value: `${secondsToMinutes(i.seconds).toFixed(0)} min`,
               group: "time",
             },
             {
@@ -85,7 +89,7 @@ export default function WazeIrregularities() {
           action={
             <MapButton
               fromLat={i.line[0].y}
-              fromLon={i.line[0].x}
+              fromLon={i.line[0]?.x}
               toLat={i.line[i.line.length - 1].y}
               toLon={i.line[i.line.length - 1].x}
             />
