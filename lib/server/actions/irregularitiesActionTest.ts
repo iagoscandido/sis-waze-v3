@@ -1,8 +1,11 @@
 "use server";
 
 import type { Irregularities } from "@/lib/types/irregularities";
+import type { WazeIrregularityData } from "@/types/wazeData";
 
-export const fetchIrregularities = async (): Promise<Irregularities[]> => {
+export const fetchIrregularities = async (): Promise<
+  WazeIrregularityData[]
+> => {
   try {
     const baseUrl = process.env.WAZE_GERAL_API_URL;
     if (!baseUrl) {
