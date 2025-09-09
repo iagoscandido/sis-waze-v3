@@ -6,6 +6,8 @@ import WazeCard from "@/components/components-test/card-waze-clone";
 import { MapButton } from "@/components/map-button";
 import { type SortOption, SortSelect } from "@/components/SortSelect";
 import { Skeleton } from "@/components/ui/skeleton";
+import { AlertSubTypeInfo } from "@/lib/mappers/alert-subtype-info";
+import { AlertTypeInfo } from "@/lib/mappers/alert-type-info";
 import { fetchIrregularities } from "@/lib/server/actions/irregularitiesActionTest";
 import { secondsToMinutes } from "@/lib/utils/date-time";
 import {
@@ -76,7 +78,7 @@ export default function WazeIrregularities() {
 
   return (
     <section className="flex flex-col gap-4">
-      {/* 🔽 Controle de ordenação */}
+      {/* Sorting Control*/}
       <div className="flex justify-end">
         <SortSelect
           options={sortOptions}
@@ -85,8 +87,8 @@ export default function WazeIrregularities() {
         />
       </div>
 
-      {/* 🔽 Cards ordenados */}
-      <main className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 justify-center">
+      {/* Cards */}
+      <main className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:flex flex-wrap gap-2 justify-center">
         {sortedIrregularities.map((i) => (
           <WazeCard
             key={i.id}
@@ -100,7 +102,22 @@ export default function WazeIrregularities() {
                 label: "Tráfego",
                 value: `${getSeverityDescription(i.severity as SeverityLevel)}`,
               },
-              { id: "cause", label: "Causa", value: i.type },
+              {
+                id: "cause",
+                label: "Causa",
+                value: i.causeAlert
+                  ? AlertTypeInfo[i.causeAlert.type].label
+                  : "",
+                group: "cause",
+              },
+              {
+                id: "cause_subtype",
+                label: "Subtipo",
+                value: i.causeAlert?.subtype
+                  ? AlertSubTypeInfo[i.causeAlert.subtype].label
+                  : "",
+                group: "cause",
+              },
               {
                 id: "avg-speed",
                 label: "Velocidade atual",
@@ -142,6 +159,7 @@ export default function WazeIrregularities() {
             }
           />
         ))}
+
         {isFetching && <Skeleton className="w-full h-12" />}
       </main>
     </section>
