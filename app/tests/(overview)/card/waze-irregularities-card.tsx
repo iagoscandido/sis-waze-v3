@@ -89,76 +89,78 @@ export default function WazeIrregularities() {
 
       {/* Cards */}
       <main className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:flex flex-wrap gap-2 justify-center">
-        {sortedIrregularities.map((i) => (
-          <WazeCard
-            key={i.id}
-            title={i.street}
-            delay={i.delaySeconds}
-            seconds={i.seconds}
-            trend={i.trend as TrendLevel}
-            metrics={[
-              {
-                id: "traffic-desc",
-                label: "Tráfego",
-                value: `${getSeverityDescription(i.severity as SeverityLevel)}`,
-              },
-              {
-                id: "cause",
-                label: "Causa",
-                value: i.causeAlert
-                  ? AlertTypeInfo[i.causeAlert.type].label
-                  : "",
-                group: "cause",
-              },
-              {
-                id: "cause_subtype",
-                label: "Subtipo",
-                value: i.causeAlert?.subtype
-                  ? AlertSubTypeInfo[i.causeAlert.subtype].label
-                  : "",
-                group: "cause",
-              },
-              {
-                id: "avg-speed",
-                label: "Velocidade atual",
-                value: `${i.speed.toFixed(0)} km/h`,
-                group: "speed",
-              },
-              {
-                id: "historic-speed",
-                label: "Velocidade histórica",
-                value: `${i.regularSpeed.toFixed(0)} km/h`,
-                group: "speed",
-              },
-              {
-                id: "delay-time",
-                label: "Tempo atual",
-                value: `${secondsToMinutes(i.delaySeconds + i.seconds).toFixed(0)} min`,
-                group: "time",
-              },
-              {
-                id: "historic-time",
-                label: "Tempo histórico",
-                value: `${secondsToMinutes(i.seconds).toFixed(0)} min`,
-                group: "time",
-              },
-              {
-                id: "distance",
-                label: "Distância",
-                value: `${(i.length * 0.001).toFixed(3)} km`,
-              },
-            ]}
-            isUpdating={isPending}
-            action={
-              <MapButton
-                fromLat={i.line[0].y}
-                fromLon={i.line[0]?.x}
-                toLat={i.line[i.line.length - 1].y}
-                toLon={i.line[i.line.length - 1].x}
-              />
-            }
-          />
-        ))}
+        {sortedIrregularities
+          .filter((i) => i.city === "Rio de Janeiro")
+          .map((i) => (
+            <WazeCard
+              key={i.id}
+              title={i.street}
+              delay={i.delaySeconds}
+              seconds={i.seconds}
+              trend={i.trend as TrendLevel}
+              metrics={[
+                {
+                  id: "traffic-desc",
+                  label: "Tráfego",
+                  value: `${getSeverityDescription(i.severity as SeverityLevel)}`,
+                },
+                {
+                  id: "cause",
+                  label: "Causa",
+                  value: i.causeAlert
+                    ? AlertTypeInfo[i.causeAlert.type].label
+                    : "",
+                  group: "cause",
+                },
+                {
+                  id: "cause_subtype",
+                  label: "Subtipo",
+                  value: i.causeAlert?.subtype
+                    ? AlertSubTypeInfo[i.causeAlert.subtype].label
+                    : "",
+                  group: "cause",
+                },
+                {
+                  id: "avg-speed",
+                  label: "Velocidade atual",
+                  value: `${i.speed.toFixed(0)} km/h`,
+                  group: "speed",
+                },
+                {
+                  id: "historic-speed",
+                  label: "Velocidade histórica",
+                  value: `${i.regularSpeed.toFixed(0)} km/h`,
+                  group: "speed",
+                },
+                {
+                  id: "delay-time",
+                  label: "Tempo atual",
+                  value: `${secondsToMinutes(i.delaySeconds + i.seconds).toFixed(0)} min`,
+                  group: "time",
+                },
+                {
+                  id: "historic-time",
+                  label: "Tempo histórico",
+                  value: `${secondsToMinutes(i.seconds).toFixed(0)} min`,
+                  group: "time",
+                },
+                {
+                  id: "distance",
+                  label: "Distância",
+                  value: `${(i.length * 0.001).toFixed(3)} km`,
+                },
+              ]}
+              isUpdating={isPending}
+              action={
+                <MapButton
+                  fromLat={i.line[0].y}
+                  fromLon={i.line[0]?.x}
+                  toLat={i.line[i.line.length - 1].y}
+                  toLon={i.line[i.line.length - 1].x}
+                />
+              }
+            />
+          ))}
 
         {isFetching && <Skeleton className="w-full h-12" />}
       </main>

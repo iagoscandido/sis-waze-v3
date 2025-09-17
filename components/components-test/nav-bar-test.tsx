@@ -19,6 +19,7 @@ import {
 import ThemeToggle from "@/components/ui/theme-toggle";
 import { cn } from "@/lib/utils";
 import MobileMenuIcon from "../mobile/menu-icon";
+import { Select, SelectTrigger, SelectValue } from "../ui/select";
 import LegendPopover from "./legend";
 
 type NavItem = {
@@ -33,8 +34,8 @@ type NavItem = {
 
 const navigationLinks: NavItem[] = [
   { href: "/", label: "Home" },
-  { href: "/tests/card", label: "Unusual" },
-  { href: "/tests/card", label: "Rotas" },
+  { href: "#", label: "Unusual" },
+  { href: "#", label: "Rotas" },
   {
     label: "Tipo de visualização",
     submenu: true,
@@ -76,7 +77,6 @@ export default function NavbarTest() {
                           </div>
                           <ul>
                             {link.items?.map((item) => (
-                              // FIX 2: Usando item.label em vez de itemIndex
                               <li key={item.label}>
                                 <NavigationMenuLink
                                   href={item.href}
@@ -109,7 +109,6 @@ export default function NavbarTest() {
             <NavigationMenu viewport={false} className="max-md:hidden">
               <NavigationMenuList className="gap-2">
                 {navigationLinks.map((link) => (
-                  // FIX 3: Usando link.label em vez de index
                   <NavigationMenuItem key={link.label}>
                     {link.submenu ? (
                       <>
@@ -149,6 +148,13 @@ export default function NavbarTest() {
                     )}
                   </NavigationMenuItem>
                 ))}
+                <NavigationMenuItem>
+                  <Select disabled>
+                    <SelectTrigger className="w-[200px]">
+                      <SelectValue placeholder="Rio de Janeiro" />
+                    </SelectTrigger>
+                  </Select>
+                </NavigationMenuItem>
               </NavigationMenuList>
             </NavigationMenu>
           </div>
